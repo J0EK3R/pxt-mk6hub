@@ -23,7 +23,6 @@ class MK6HubService
     
     private:
 
-    // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
     const uint8_t flags[1] = {0x06};
     const uint8_t linecorp[2] = {0x6F, 0xFE};
     const uint8_t hwidframe[9] = {
@@ -43,8 +42,8 @@ class MK6HubService
 // https://lancaster-university.github.io/microbit-docs/ble/eddystone/
 
 /**
-  * Class definition for the LineBeacon service.
-  * Provides a BLE service to receive LineBeaconMessages
+  * Class definition for the MK6 Hub service.
+  * Provides a BLE service to receive MK6 Hub Messages
   */
 class MK6HubService
 {
@@ -64,7 +63,6 @@ class MK6HubService
     // Bluetooth stack we're running on.
     BLEDevice           	&ble;
 
-    // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
     const uint8_t flags[1] = {0x06};
     const uint8_t linecorp[2] = {0x6F, 0xFE};
     const uint8_t hwidframe[9] = {

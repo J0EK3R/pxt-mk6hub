@@ -3,7 +3,7 @@
  * Support for MK6 Hub.
  */
 //% color=#00c300 weight=100 icon="\uf294" block="MK6Hub"
-namespace linebeacon {
+namespace mk6hub {
 
     // color="#00c300" weight=100 icon="\uf3c0"
 
@@ -11,10 +11,10 @@ namespace linebeacon {
     *  MK6Hub Start
     * @param hwid hex HWID, eg: "0f0f0f0f0f"
     */
-    //% blockId=linebeacon_start 
+    //% blockId=mk6hub_start 
     //% block="MK6Hub start HWID is %hwid"
     //% blockGap=8 weight=60
-    // //% help=pxt-linebeacon/start 
+    // //% help=pxt-mk6hub/start 
     export function start(hwid: string): void {
         if (hwid.length != 10) {
         }
@@ -26,11 +26,11 @@ namespace linebeacon {
     * @param hwid hex HWID, eg: "0f0f0f0f0f"
     * @param message hex Device Message 1byte to 13byte, eg: "1a2b3c4d5e6f70809010a0b0c0"
     */
-    //% blockId=linebeacon_start_with_devicemessage
+    //% blockId=mk6hub_start_with_devicemessage
     //% block="MK6Hub start HWID is %hwid|with Device Message %message"
-    //% shim=linebeacon::startWithDeviceMessage
+    //% shim=mk6hub::startWithDeviceMessage
     //% blockGap=8 weight=55 blockExternalInputs=1
-    // //% help=pxt-linebeacon/start-with-device-message
+    // //% help=pxt-mk6hub/start-with-device-message
     export function startWithDeviceMessage(hwid: string, message: string): void {
         if (hwid.length != 10) {
             basic.clearScreen();
@@ -48,9 +48,9 @@ namespace linebeacon {
     /**
      * Stops advertising MK6Hub end points
      */
-    //% blockId=linebeacon_stop
+    //% blockId=mk6hub_stop
     //% block="MK6 Hub stop"
-    //% shim=linebeacon::stop
+    //% shim=mk6hub::stop
     //% weight=10 blockGap=8 advanced=true
     export function stop() {
         return;
@@ -59,7 +59,7 @@ namespace linebeacon {
 //     /**
 //      * Stops advertising MK6Hub end points
 //      */
-//     //% blockId=linebeacon_central
+//     //% blockId=mk6hub_central
 //     //% block="MK6Hub central"
 //     //% weight=10 blockGap=8 advanced=true
 //     //% group="micro:bit (V2)"
