@@ -190,9 +190,9 @@ void MK6HubService::start() {
 
 }
 
-void MK6HubService::setchannel(const uint8_t channelid, const uint8_t value)
+void MK6HubService::setchannel(const uint8_t channelId, const uint8_t value)
 {
-    channels[channelid] = value;
+    channels[channelId] = value;
     start();
 }
 

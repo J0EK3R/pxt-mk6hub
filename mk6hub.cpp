@@ -37,6 +37,7 @@ namespace mk6hub {
 #else
             _pService = new MK6HubService(*uBit.ble);
 #endif
+            _pService->start();
         }
 
         _pService->setChannel(channelId, value);

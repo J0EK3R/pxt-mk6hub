@@ -25,23 +25,24 @@ namespace mk6hub {
     // color="#00c300" weight=100 icon="\uf3c0"
 
     /**
-    *  MK6Hub Start
+    *  Starts advertising to MK6Hub
     */
     //% blockId=mk6hub_start 
     //% block="MK6Hub start"
     //% blockGap=8 weight=60
     // //% help=pxt-mk6hub/start 
     export function start(): void {
+        return;
     }
 
     /**
-     * Stops advertising MK6Hub end points
+     * Stops advertising to MK6Hub
      */
     //% blockId=mk6hub_stop
-    //% block="MK6 Hub stop"
+    //% block="MK6Hub stop"
     //% shim=mk6hub::stop
     //% weight=10 blockGap=8 advanced=true
-    export function stop() {
+    export function stop(): void {
         return;
     };
 
@@ -51,7 +52,7 @@ namespace mk6hub {
     * @param channelId channelId, eg: "0"
     */
     //% blockId=mk6hub_setChannel 
-    //% block="MK6Hub set Channel ID %channelId|with Value %value"
+    //% block="MK6Hub set Channel %channelId|with Value %value"
     //% blockGap=8 weight=60
     // //% help=pxt-mk6hub/setChannel 
     export function setChannel(channelId: Channel, value: number): void {
