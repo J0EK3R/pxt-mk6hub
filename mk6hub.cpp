@@ -1,0 +1,99 @@
+#include "pxt.h"
+#include "MK6HubService.h"
+#include <stdio.h>
+#include <ctype.h>
+#include "MicroBitConfig.h"
+
+using namespace pxt;
+
+/**
+ * Support for MK6 Hub.
+ */
+//% color=#00c300 weight=100 icon="\uf294" block="MK6"
+namespace mk6hub {
+
+    MK6HubService* _pService = NULL;
+
+    int hexStringToBytes(String strData, uint8_t *data, uint8_t maxlen) {
+        
+        // https://lancaster-university.github.io/microbit-docs/data-types/string/
+        ManagedString m = MSTR(strData);
+
+        int16_t len = m.length();
+        if (maxlen * 2 < len) {
+            len = maxlen * 2;
+        }
+
+        int i;
+
+        for (i=0; i<len; i++) {
+            if (! isxdigit(m.charAt(i))) {
+                return MICROBIT_INVALID_PARAMETER;
+            }
+        }
+
+        for (int16_t i=0; i<len; i+=2) {
+            unsigned int x;
+            
+            sscanf(m.substring(i,2).toCharArray(), "%02x", &x);
+            data[i/2] = (uint8_t) x;
+        }
+
+        return MICROBIT_OK; 
+    }
+
+    //%
+    void startWithDeviceMessage(String hwid, String message) {
+
+        ManagedString h = MSTR(hwid);
+        ManagedString m = MSTR(message);
+
+        if (h.length() != 10) {
+            uBit.display.clear();
+            uBit.display.print("MK6 Hub HWID is invalid.");
+            return;
+        }
+
+        if (m.length() > 26 || m.length() % 2 != 0) {
+            uBit.display.clear();
+            uBit.display.print("MK6 Hub Message is invalid.");
+            return;
+        }
+
+        if (NULL == _pService) {
+#if MICROBIT_CODAL
+            _pService = new MK6HubService();
+#else
+            _pService = new MK6HubService(*uBit.ble);
+#endif
+        }
+
+        uint8_t hwidBytes[5];
+        if (hexStringToBytes(hwid, hwidBytes, 5) != MICROBIT_OK) {
+            uBit.display.clear();
+            uBit.display.print("MK6 Hub HWID is invalid.");               
+        }
+
+        uint8_t msglen = m.length() / 2;
+
+        if (msglen > 13) msglen = 13;
+        uint8_t messageBytes[msglen];
+        if (hexStringToBytes(message, messageBytes, msglen) != MICROBIT_OK) {
+            uBit.display.clear();
+            uBit.display.print("MK6 Hub Message is invalid.");               
+        }
+
+        _pService->start(hwidBytes, messageBytes, msglen);
+    }
+
+
+    //% 
+    void stop() {        
+        if (NULL != _pService) {
+            _pService->stop();
+        }        
+
+        // uBit.bleManager.stopAdvertising();  
+    }   
+
+}
