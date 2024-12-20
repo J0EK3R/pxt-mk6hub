@@ -1,6 +1,6 @@
 {
     "name": "mk6hub",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "MK6Hub",
     "license": "MIT",
     "dependencies": {

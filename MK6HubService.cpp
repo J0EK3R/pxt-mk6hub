@@ -102,7 +102,7 @@ static uint8_t m_beacon_info[31] =
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(const uint8_t *hwid, const uint8_t *message, const uint8_t len)
+static void advertising_init()
 {
 
     // uint8_t frameData[ MicroBitEddystone::frameSizeUID]; 組み立てるか。。。それもまたよし。。。
@@ -111,11 +111,11 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
     // m_beacon_info[14 = hwid[2];
     // m_beacon_info[7] = hwid[3];
     // m_beacon_info[8] = hwid[4];
-    m_beacon_info[7] = 10 + len;
-    memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
+    // m_beacon_info[7] = 10 + len;
+    // memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
 
-    memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
-    memcpy(&m_beacon_info[18], message, len);
+    // memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
+    // memcpy(&m_beacon_info[18], message, len);
 
     ble_gap_adv_params_t    gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -177,12 +177,12 @@ static void advertising_stop(void) {
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
 
-void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
+void MK6HubService::start() {
 
     MICROBIT_DEBUG_DMESG("MK6HubService::start");
     // uBit.display.print("start");
 
-    advertising_init(hwid, message, len);
+    advertising_init();
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
@@ -193,6 +193,7 @@ void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uin
 void MK6HubService::setchannel(const uint8_t channelid, const uint8_t value)
 {
     channels[channelid] = value;
+    start();
 }
 
 void MK6HubService::stop() {
@@ -213,7 +214,7 @@ void MK6HubService::stop() {
  */
 MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {}
 
-void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
+void MK6HubService::start() {
     ble.gap().startAdvertising();
 
     GapAdvertisingData payload;
@@ -228,6 +229,7 @@ void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uin
 void MK6HubService::setchannel(const uint8_t channelid, const uint8_t value)
 {
     channels[channelid] = value;
+    start();
 }
 
 void MK6HubService::stop() {
