@@ -41,7 +41,7 @@ namespace mk6hub {
     //% blockId=mk6hub_stop
     //% block="MK6Hub stop"
     //% shim=mk6hub::stop
-    //% weight=10 blockGap=8 advanced=true
+    //% weight=10 blockGap=8
     export function stop(): void {
         return;
     };
