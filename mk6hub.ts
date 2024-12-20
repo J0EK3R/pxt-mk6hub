@@ -7,6 +7,15 @@ namespace mk6hub {
 
     // color="#00c300" weight=100 icon="\uf3c0"
 
+    enum Channel {
+        A = 0,
+        B = 1,
+        C = 2,
+        D = 3,
+        E = 4,
+        F = 5
+    }
+    
     /**
     *  MK6Hub Start
     * @param hwid hex HWID, eg: "0f0f0f0f0f"
@@ -55,6 +64,20 @@ namespace mk6hub {
     export function stop() {
         return;
     };
+
+
+    /**
+    *  MK6Hub SetChannel
+    * @param channelId channelId, eg: "0"
+    */
+    //% blockId=mk6hub_setChannel 
+    //% block="MK6Hub set Channel ID %channelId|with Value %value"
+    //% blockGap=8 weight=60
+    // //% help=pxt-mk6hub/setChannel 
+    export function setChannel(channelId: Channel, value: number): void {
+        return;
+    }
+
 
 //     /**
 //      * Stops advertising MK6Hub end points

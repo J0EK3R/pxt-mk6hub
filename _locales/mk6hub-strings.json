@@ -1,4 +1,5 @@
 {
+  "mk6hub.setChannel|block": "MK6 Hub set Channel %channelId|with Value %value",
   "mk6hub.startWithDeviceMessage|block": "MK6 Hub start HWID is %hwid|with Device Message %message",
   "mk6hub.start|block": "MK6 Hub start HWID is %hwid",
   "mk6hub.stop|block": "MK6 Hub stop",

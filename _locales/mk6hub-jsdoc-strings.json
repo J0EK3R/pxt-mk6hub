@@ -5,5 +5,8 @@
   "mk6hub.startWithDeviceMessage|param|hwid": "hex HWID, eg: \"0f0f0f0f0f\"",
   "mk6hub.startWithDeviceMessage|param|message": "hex Device Message 1byte to 13byte, eg: \"1a2b3c4d5e6f70809010a0b0c0\"",
   "mk6hub.start|param|hwid": "hex HWID, eg: \"0f0f0f0f0f\"",
+  "mk6hub.setChannel": "MK6 Hub set Channel",
+  "mk6hub.setChannel|param|channelId": "ChannelId, eg: \"0\"",
+  "mk6hub.setChannel|param|value": "Value, eg: \"100\"",
   "mk6hub.stop": "Stops advertising to MK6 Hub"
 }

@@ -86,6 +86,19 @@ namespace mk6hub {
         _pService->start(hwidBytes, messageBytes, msglen);
     }
 
+    //%
+    void setChannel(uint8_t channelId, uint8_t value) {
+
+        if (NULL == _pService) {
+#if MICROBIT_CODAL
+            _pService = new MK6HubService();
+#else
+            _pService = new MK6HubService(*uBit.ble);
+#endif
+        }
+
+        _pService->start(hwidBytes, messageBytes, msglen);
+    }
 
     //% 
     void stop() {        
