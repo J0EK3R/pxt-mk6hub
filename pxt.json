@@ -1,7 +1,7 @@
 {
-    "name": "linebeacon",
-    "version": "0.0.14",
-    "description": "LINE Beacon",
+    "name": "mk6hub",
+    "version": "0.0.1",
+    "description": "MK6 Hub",
     "license": "MIT",
     "dependencies": {
         "core": "*"
