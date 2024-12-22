@@ -80,19 +80,15 @@ static uint8_t              m_enc_advdata[ BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**<
 
 static uint8_t m_beacon_info[31] = 
 {
-    0x02, // Len
-    0x01, // Type
-    0x06, // Value
-    0x03, // Len
-    0x03, // Type
-    0x5f, 0xfe,
-    0x17, // Len
-    0x16, // Type
-    0x5f, 0xfe,
-    0x02,
-    0x01, 0x12, 0x23, 0x34, 0x45, // LINE_BEACON_HWID, 
-    0x7f,
-    0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78, 0x89, 0x9a, 0xab, 0xbc, 0xcd // LINE_BEACON_MESSAGE
+  0x02, // Len
+  0x01, // Type: Flags
+  0x02, // Value:
+  0x1b, // Len
+  0xff, // Type: Manufacturer Specific
+  0xf0, 0xff, // Company ID
+  0x6d, 0xb6, 0x43, 0xcf, 0x7e, 0x8f, 0x47, 0x11, 
+  0x84, 0x66, 0x59, 0x38, 0xd1, 0x7a, 0xaa, 0x34, 
+  0x67, 0x4a, 0x55, 0xbf, 0x15, 0x16, 0x17, 0x18
 };
 
 /**@brief Function for initializing the Advertising functionality.
@@ -109,11 +105,11 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
     // m_beacon_info[14 = hwid[2];
     // m_beacon_info[7] = hwid[3];
     // m_beacon_info[8] = hwid[4];
-    m_beacon_info[7] = 10 + len;
-    memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
+    // m_beacon_info[7] = 10 + len;
+    // memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
 
-    memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
-    memcpy(&m_beacon_info[18], message, len);
+    // memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
+    // memcpy(&m_beacon_info[18], message, len);
 
     ble_gap_adv_params_t    gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
