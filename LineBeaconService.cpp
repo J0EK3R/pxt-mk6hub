@@ -126,7 +126,7 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
     ble_gap_adv_data_t  gap_adv_data;
     memset( &gap_adv_data, 0, sizeof( gap_adv_data));
     gap_adv_data.adv_data.p_data    = m_beacon_info;
-    gap_adv_data.adv_data.len       = 18 + len;
+    gap_adv_data.adv_data.len       = 18 + 17;
 
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
 
