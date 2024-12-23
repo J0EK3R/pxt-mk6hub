@@ -1,5 +1,6 @@
-#include <iostream>
-#include <cstdint>
+#include "CryptTool.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 uint8_t Invert_8(uint8_t value) 
 {

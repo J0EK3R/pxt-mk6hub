@@ -2,6 +2,7 @@
 #define CRYPTTOOL_H
 
 #include "MicroBitConfig.h"
+#include "pxt.h"
 
 class CryptTool
 {
