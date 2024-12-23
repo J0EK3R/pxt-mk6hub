@@ -13,7 +13,9 @@
         "linebeacon.ts",
         "linebeacon.cpp",
         "LineBeaconService.cpp",
-        "LineBeaconService.h"
+        "LineBeaconService.h",
+        "CryptTool.cpp",
+        "CryptTool.h"
     ],
     "testFiles": [
         "test.ts"
