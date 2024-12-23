@@ -103,11 +103,11 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
     // m_beacon_info[14 = hwid[2];
     // m_beacon_info[7] = hwid[3];
     // m_beacon_info[8] = hwid[4];
-    m_beacon_info[7] = 10 + len;
-    memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
+    // m_beacon_info[7] = 10 + len;
+    // memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
 
-    memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
-    memcpy(&m_beacon_info[18], message, len);
+    // memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
+    // memcpy(&m_beacon_info[18], message, len);
 
     ble_gap_adv_params_t    gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
