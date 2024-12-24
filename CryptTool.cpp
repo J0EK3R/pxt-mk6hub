@@ -30,38 +30,38 @@ static uint16_t invert_16(uint16_t value)
     return result;
 }
 
-// uint16_t Check_crc16(const uint8_t* array1, size_t array1Length, const uint8_t* array2, size_t array2Length) 
-// {
-//     uint16_t result = 0xffff;
-//     for (size_t index = 0; index < array1Length; ++index) {
-//         result ^= static_cast<uint16_t>(array1[array1Length - 1 - index] << 8);
+static uint16_t check_crc16(const uint8_t* array1, uint8_t array1Length, const uint8_t* array2, uint8_t array2Length) 
+{
+    uint16_t result = 0xffff;
+    for (uint8_t index = 0; index < array1Length; ++index) {
+        result ^= static_cast<uint16_t>(array1[array1Length - 1 - index] << 8);
 
-//         for (int local_24 = 0; local_24 < 8; ++local_24) {
-//             if ((result & 0x8000) == 0) {
-//                 result <<= 1;
-//             } else {
-//                 result = (result << 1) ^ 0x1021;
-//             }
-//         }
-//     }
+        for (uint8_t local_24 = 0; local_24 < 8; ++local_24) {
+            if ((result & 0x8000) == 0) {
+                result <<= 1;
+            } else {
+                result = (result << 1) ^ 0x1021;
+            }
+        }
+    }
 
-//     for (size_t index = 0; index < array2Length; ++index) {
-//         uint8_t cVar1 = Invert_8(array2[index]);
+    for (uint8_t index = 0; index < array2Length; ++index) {
+        uint8_t cVar1 = invert_8(array2[index]);
 
-//         result ^= static_cast<uint16_t>(cVar1 << 8);
+        result ^= static_cast<uint16_t>(cVar1 << 8);
 
-//         for (int local_2c = 0; local_2c < 8; ++local_2c) {
-//             if ((result & 0x8000) == 0) {
-//                 result <<= 1;
-//             } else {
-//                 result = (result << 1) ^ 0x1021;
-//             }
-//         }
-//     }
+        for (uint8_t local_2c = 0; local_2c < 8; ++local_2c) {
+            if ((result & 0x8000) == 0) {
+                result <<= 1;
+            } else {
+                result = (result << 1) ^ 0x1021;
+            }
+        }
+    }
 
-//     uint16_t result_inverse = Invert_16(result);
-//     return static_cast<uint16_t>(result_inverse ^ 0xffff);
-// }
+    uint16_t result_inverse = invert_16(result);
+    return static_cast<uint16_t>(result_inverse ^ 0xffff);
+}
 
 
 static void whitening_init(uint8_t val, uint8_t ctx[7]) {
