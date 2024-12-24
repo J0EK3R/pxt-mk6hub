@@ -87,17 +87,17 @@ static uint8_t whitening_output(uint8_t ctx[7]) {
     return ctx[0];
 }
 
-// static void whitening_encode(uint8_t data[], int dataStartIndex, int len, uint8_t ctx[7]) {
-//     for (int index = 0; index < len; ++index) {
-//         uint8_t currentByte = data[dataStartIndex + index];
-//         int currentResult = 0;
-//         for (int bitIndex = 0; bitIndex < 8; ++bitIndex) {
-//             uint8_t uVar2 = whitening_output(ctx);
-//             currentResult = (uVar2 ^ ((currentByte >> bitIndex) & 1U)) << bitIndex | currentResult;
-//         }
-//         data[dataStartIndex + index] = static_cast<uint8_t>(currentResult);
-//     }
-// }
+static void whitening_encode(uint8_t data[], const uint8_t dataStartIndex, const uint8_t len, uint8_t ctx[7]) {
+    for (uint8_t index = 0; index < len; ++index) {
+        uint8_t currentByte = data[dataStartIndex + index];
+        uint16_t currentResult = 0;
+        for (uint8_t bitIndex = 0; bitIndex < 8; ++bitIndex) {
+            uint8_t uVar2 = whitening_output(ctx);
+            currentResult = (uVar2 ^ ((currentByte >> bitIndex) & 0x0001)) << bitIndex | currentResult;
+        }
+        data[dataStartIndex + index] = static_cast<uint8_t>(currentResult);
+    }
+}
 
 void CryptTool::enCrypt(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue) {
 
