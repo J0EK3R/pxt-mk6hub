@@ -8,16 +8,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// uint8_t Invert_8(uint8_t value) 
-// {
-//     uint8_t result = 0;
-//     for (int index = 0; index < 8; ++index) {
-//         if ((value & (1 << index)) != 0) {
-//             result |= (1 << (7 - index));
-//         }
-//     }
-//     return result;
-// }
+static uint8_t invert_8(uint8_t value) 
+{
+    uint8_t result = 0;
+    for (int index = 0; index < 8; ++index) {
+        if ((value & (1 << index)) != 0) {
+            result |= (1 << (7 - index));
+        }
+    }
+    return result;
+}
 
 // uint16_t Invert_16(uint16_t value) 
 // {
