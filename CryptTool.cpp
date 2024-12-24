@@ -64,7 +64,7 @@ static uint16_t check_crc16(const uint8_t* array1, const uint8_t array1Length, c
 }
 
 
-static void whitening_init(const uint8_t val, const uint8_t ctx[7]) {
+static void whitening_init(const uint8_t val, uint8_t ctx[7]) {
     ctx[0] = 1;
     ctx[1] = (val >> 5) & 1;
     ctx[2] = (val >> 4) & 1;
@@ -74,7 +74,7 @@ static void whitening_init(const uint8_t val, const uint8_t ctx[7]) {
     ctx[6] = val & 1;
 }
 
-static uint8_t whitening_output(const uint8_t ctx[7]) {
+static uint8_t whitening_output(uint8_t ctx[7]) {
     uint8_t value_3 = ctx[3];
     uint8_t value_6 = ctx[6];
     ctx[3] = ctx[2];
