@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-static uint8_t invert_8(uint8_t value) 
+static uint8_t invert_8(const uint8_t value) 
 {
     uint8_t result = 0;
     for (int index = 0; index < 8; ++index) {
@@ -19,7 +19,7 @@ static uint8_t invert_8(uint8_t value)
     return result;
 }
 
-static uint16_t invert_16(uint16_t value) 
+static uint16_t invert_16(const uint16_t value) 
 {
     uint16_t result = 0;
     for (int index = 0; index < 16; ++index) {
@@ -64,7 +64,7 @@ static uint16_t check_crc16(const uint8_t* array1, uint8_t array1Length, const u
 }
 
 
-static void whitening_init(uint8_t val, uint8_t ctx[7]) {
+static void whitening_init(const uint8_t val, const uint8_t ctx[7]) {
     ctx[0] = 1;
     ctx[1] = (val >> 5) & 1;
     ctx[2] = (val >> 4) & 1;
@@ -74,7 +74,7 @@ static void whitening_init(uint8_t val, uint8_t ctx[7]) {
     ctx[6] = val & 1;
 }
 
-static uint8_t whitening_output(uint8_t ctx[7]) {
+static uint8_t whitening_output(const uint8_t ctx[7]) {
     uint8_t value_3 = ctx[3];
     uint8_t value_6 = ctx[6];
     ctx[3] = ctx[2];
@@ -87,17 +87,17 @@ static uint8_t whitening_output(uint8_t ctx[7]) {
     return ctx[0];
 }
 
-// void Whitening_encode(uint8_t data[], int dataStartIndex, int len, uint8_t ctx[7]) {
-//     for (int index = 0; index < len; ++index) {
-//         uint8_t currentByte = data[dataStartIndex + index];
-//         int currentResult = 0;
-//         for (int bitIndex = 0; bitIndex < 8; ++bitIndex) {
-//             uint8_t uVar2 = whitening_output(ctx);
-//             currentResult = (uVar2 ^ ((currentByte >> bitIndex) & 1U)) << bitIndex | currentResult;
-//         }
-//         data[dataStartIndex + index] = static_cast<uint8_t>(currentResult);
-//     }
-// }
+static void whitening_encode(const uint8_t data[], const uint8_t dataStartIndex, const uint8_t len, const uint8_t ctx[7]) {
+    for (uint8_t index = 0; index < len; ++index) {
+        uint8_t currentByte = data[dataStartIndex + index];
+        int currentResult = 0;
+        for (uint8_t bitIndex = 0; bitIndex < 8; ++bitIndex) {
+            uint8_t uVar2 = whitening_output(ctx);
+            currentResult = (uVar2 ^ ((currentByte >> bitIndex) & 1U)) << bitIndex | currentResult;
+        }
+        data[dataStartIndex + index] = static_cast<uint8_t>(currentResult);
+    }
+}
 
 void CryptTool::enCrypt(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue) {
 
