@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-static uint8_t invert_8(uint8_t value) 
+static uint8_t invert_8(const uint8_t value) 
 {
     uint8_t result = 0;
     for (int index = 0; index < 8; ++index) {
@@ -19,7 +19,7 @@ static uint8_t invert_8(uint8_t value)
     return result;
 }
 
-static uint16_t invert_16(uint16_t value) 
+static uint16_t invert_16(const uint16_t value) 
 {
     uint16_t result = 0;
     for (int index = 0; index < 16; ++index) {
@@ -30,7 +30,7 @@ static uint16_t invert_16(uint16_t value)
     return result;
 }
 
-static uint16_t check_crc16(const uint8_t* array1, uint8_t array1Length, const uint8_t* array2, uint8_t array2Length) 
+static uint16_t check_crc16(const uint8_t* array1, const uint8_t array1Length, const uint8_t* array2, const uint8_t array2Length) 
 {
     uint16_t result = 0xffff;
     for (uint8_t index = 0; index < array1Length; ++index) {
@@ -64,7 +64,7 @@ static uint16_t check_crc16(const uint8_t* array1, uint8_t array1Length, const u
 }
 
 
-static void whitening_init(uint8_t val, uint8_t ctx[7]) {
+static void whitening_init(const uint8_t val, const uint8_t ctx[7]) {
     ctx[0] = 1;
     ctx[1] = (val >> 5) & 1;
     ctx[2] = (val >> 4) & 1;
@@ -74,7 +74,7 @@ static void whitening_init(uint8_t val, uint8_t ctx[7]) {
     ctx[6] = val & 1;
 }
 
-static uint8_t whitening_output(uint8_t ctx[7]) {
+static uint8_t whitening_output(const uint8_t ctx[7]) {
     uint8_t value_3 = ctx[3];
     uint8_t value_6 = ctx[6];
     ctx[3] = ctx[2];
