@@ -4,8 +4,10 @@
 #include "MicroBitConfig.h"
 #include "pxt.h"
 
-// class CryptTool
-// {
-// public:
-//     uint8_t *EnCrypt(uint8_t *addr, size_t addrLength, uint8_t *data, size_t dataLength, uint8_t ctxValue);
-// };
+class CryptTool
+{
+public:
+    void EnCrypt(uint8_t *addr, uint8_t addrLength, uint8_t *data, uint8_t dataLength, uint8_t ctxValue);
+};
+
+#endif

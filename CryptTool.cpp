@@ -1,4 +1,6 @@
 #include "CryptTool.h"
+
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -93,12 +95,6 @@
 //     }
 // }
 
-// uint8_t* CryptTool::EnCrypt(uint8_t* addr, size_t addrLength, uint8_t* data, size_t dataLength, uint8_t ctxValue)
-// {
-//     // Example encryption logic
-//     // Replace this with your actual encryption implementation
-//     for (size_t i = 0; i < dataLength; ++i) {
-//         data[i] ^= ctxValue;
-//     }
-//     return data;
-// }
+void CryptTool::EnCrypt(uint8_t *addr, uint8_t addrLength, uint8_t *data, uint8_t dataLength, uint8_t ctxValue);
+{
+}
