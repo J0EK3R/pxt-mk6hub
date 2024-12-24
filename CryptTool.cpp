@@ -1,5 +1,9 @@
+#include "MicroBitConfig.h"
 #include "CryptTool.h"
 
+//================================================================
+#if MICROBIT_CODAL
+//================================================================
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -95,6 +99,17 @@
 //     }
 // }
 
-void CryptTool::EnCrypt(uint8_t *addr, uint8_t addrLength, uint8_t *data, uint8_t dataLength, uint8_t ctxValue);
-{
+void CryptTool::enCrypt(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue) {
+
+    MICROBIT_DEBUG_DMESG("CryptTool::enCrypt");
+
 }
+
+//================================================================
+#else // MICROBIT_CODAL
+//================================================================
+
+
+//================================================================
+#endif // MICROBIT_CODAL
+//================================================================
