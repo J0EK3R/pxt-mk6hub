@@ -19,16 +19,16 @@ static uint8_t invert_8(uint8_t value)
     return result;
 }
 
-// uint16_t Invert_16(uint16_t value) 
-// {
-//     uint16_t result = 0;
-//     for (int index = 0; index < 16; ++index) {
-//         if ((value & (1 << index)) != 0) {
-//             result |= (1 << (15 - index));
-//         }
-//     }
-//     return result;
-// }
+static uint16_t invert_16(uint16_t value) 
+{
+    uint16_t result = 0;
+    for (int index = 0; index < 16; ++index) {
+        if ((value & (1 << index)) != 0) {
+            result |= (1 << (15 - index));
+        }
+    }
+    return result;
+}
 
 // uint16_t Check_crc16(const uint8_t* array1, size_t array1Length, const uint8_t* array2, size_t array2Length) 
 // {
@@ -64,28 +64,28 @@ static uint8_t invert_8(uint8_t value)
 // }
 
 
-// void Whitening_init(uint8_t val, uint8_t ctx[7]) {
-//     ctx[0] = 1;
-//     ctx[1] = (val >> 5) & 1;
-//     ctx[2] = (val >> 4) & 1;
-//     ctx[3] = (val >> 3) & 1;
-//     ctx[4] = (val >> 2) & 1;
-//     ctx[5] = (val >> 1) & 1;
-//     ctx[6] = val & 1;
-// }
+static void whitening_init(uint8_t val, uint8_t ctx[7]) {
+    ctx[0] = 1;
+    ctx[1] = (val >> 5) & 1;
+    ctx[2] = (val >> 4) & 1;
+    ctx[3] = (val >> 3) & 1;
+    ctx[4] = (val >> 2) & 1;
+    ctx[5] = (val >> 1) & 1;
+    ctx[6] = val & 1;
+}
 
-// uint8_t whitening_output(uint8_t ctx[7]) {
-//     uint8_t value_3 = ctx[3];
-//     uint8_t value_6 = ctx[6];
-//     ctx[3] = ctx[2];
-//     ctx[2] = ctx[1];
-//     ctx[1] = ctx[0];
-//     ctx[0] = ctx[6];
-//     ctx[6] = ctx[5];
-//     ctx[5] = ctx[4];
-//     ctx[4] = value_3 ^ value_6;
-//     return ctx[0];
-// }
+static uint8_t whitening_output(uint8_t ctx[7]) {
+    uint8_t value_3 = ctx[3];
+    uint8_t value_6 = ctx[6];
+    ctx[3] = ctx[2];
+    ctx[2] = ctx[1];
+    ctx[1] = ctx[0];
+    ctx[0] = ctx[6];
+    ctx[6] = ctx[5];
+    ctx[5] = ctx[4];
+    ctx[4] = value_3 ^ value_6;
+    return ctx[0];
+}
 
 // void Whitening_encode(uint8_t data[], int dataStartIndex, int len, uint8_t ctx[7]) {
 //     for (int index = 0; index < len; ++index) {
