@@ -133,9 +133,9 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     }
 
     // calc checksum und copy to array
-    // uint16_t checksum = check_crc16(addr, data);
-    // resultbuf[result_data_size - 2] = (uint8_t)(checksum & 255);
-    // resultbuf[result_data_size - 1] = (uint8_t)((checksum >> 8) & 255);
+    uint16_t checksum = check_crc16(addr, addrLength, data, dataLength);
+    resultbuf[result_data_size - 2] = (uint8_t)(checksum & 255);
+    resultbuf[result_data_size - 1] = (uint8_t)((checksum >> 8) & 255);
 
     // uint8_t[] ctx_0x3F = new uint8_t[7]; // int local_58[8];
     // whitening_init(0x3f, ctx_0x3F); // 0x3f (63) -> ctx_0x3F = [1111111]
