@@ -142,8 +142,8 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     whitening_init(0x3f, ctx_0x3F); // 0x3f (63) -> ctx_0x3F = [1111111]
     whitening_encode(resultbuf, 0x12, addrLength + dataLength + 2, ctx_0x3F);
 
-    // uint8_t[] ctx = new uint8_t[7];
-    // whitening_init(ctxValue, ctx); // ctxValue= 0x25 (37) -> ctx = [1101110]
+    uint8_t[7] ctx; // = new uint8_t[7];
+    whitening_init(ctxValue, ctx); // ctxValue= 0x25 (37) -> ctx = [1101110]
     // whitening_encode(resultbuf, 0, result_data_size, ctx);
 
     // // resulting advertisment array has a length of constant 24 bytes
