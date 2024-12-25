@@ -102,66 +102,66 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
 
     MICROBIT_DEBUG_DMESG("CryptTool::get_rf_payload");
 
-    uint8_t data_offset = 0x12; // 0x12 (18)
-    uint8_t inverse_offset = 0x0f; // 0x0f (15)
+    // uint8_t data_offset = 0x12; // 0x12 (18)
+    // uint8_t inverse_offset = 0x0f; // 0x0f (15)
 
-    uint8_t result_data_size = data_offset + addrLength + dataLength + 2;
-    uint8_t[] resultbuf = new uint8_t[result_data_size];
+    // uint8_t result_data_size = data_offset + addrLength + dataLength + 2;
+    // uint8_t[] resultbuf = new uint8_t[result_data_size];
 
-    resultbuf[15] = 113; // 0x71
-    resultbuf[16] = 15;  // 0x0f
-    resultbuf[17] = 85;  // 0x55
+    // resultbuf[15] = 113; // 0x71
+    // resultbuf[16] = 15;  // 0x0f
+    // resultbuf[17] = 85;  // 0x55
 
-    // copy firstDataArray reverse into targetArray with offset 18
-    for (uint8_t index = 0; index < addrLength; index++)
-    {
-        //resultbuf[data_offset + addrLength - index - 1] = addr[index];
-        resultbuf[index + data_offset] = addr[(addrLength - index) - 1];
-    }
+    // // copy firstDataArray reverse into targetArray with offset 18
+    // for (uint8_t index = 0; index < addrLength; index++)
+    // {
+    //     //resultbuf[data_offset + addrLength - index - 1] = addr[index];
+    //     resultbuf[index + data_offset] = addr[(addrLength - index) - 1];
+    // }
 
-    //Buffer.BlockCopy(data, 0, resultbuf, addrLength + data_offset, dataLength);
-    // copy dataArray into resultbuf with offset 18 + addrLength
-    for (uint8_t index = 0; index < dataLength; index++)
-    {
-        resultbuf[data_offset + addrLength + index] = data[index];
-    }
+    // //Buffer.BlockCopy(data, 0, resultbuf, addrLength + data_offset, dataLength);
+    // // copy dataArray into resultbuf with offset 18 + addrLength
+    // for (uint8_t index = 0; index < dataLength; index++)
+    // {
+    //     resultbuf[data_offset + addrLength + index] = data[index];
+    // }
 
-    // crypt Bytes from position 15 to 22
-    for (uint8_t index = inverse_offset; index < addrLength + data_offset; index++)
-    {
-        resultbuf[index] = invert_8(resultbuf[index]);
-    }
+    // // crypt Bytes from position 15 to 22
+    // for (uint8_t index = inverse_offset; index < addrLength + data_offset; index++)
+    // {
+    //     resultbuf[index] = invert_8(resultbuf[index]);
+    // }
 
-    // calc checksum und copy to array
-    uint16_t checksum = check_crc16(addr, data);
-    resultbuf[result_data_size - 2] = (uint8_t)(checksum & 255);
-    resultbuf[result_data_size - 1] = (uint8_t)((checksum >> 8) & 255);
+    // // calc checksum und copy to array
+    // uint16_t checksum = check_crc16(addr, data);
+    // resultbuf[result_data_size - 2] = (uint8_t)(checksum & 255);
+    // resultbuf[result_data_size - 1] = (uint8_t)((checksum >> 8) & 255);
 
-    uint8_t[] ctx_0x3F = new uint8_t[7]; // int local_58[8];
-    whitening_init(0x3f, ctx_0x3F); // 0x3f (63) -> ctx_0x3F = [1111111]
-    whitening_encode(resultbuf, 0x12, addrLength + dataLength + 2, ctx_0x3F);
+    // uint8_t[] ctx_0x3F = new uint8_t[7]; // int local_58[8];
+    // whitening_init(0x3f, ctx_0x3F); // 0x3f (63) -> ctx_0x3F = [1111111]
+    // whitening_encode(resultbuf, 0x12, addrLength + dataLength + 2, ctx_0x3F);
 
-    uint8_t[] ctx = new uint8_t[7];
-    whitening_init(ctxValue, ctx); // ctxValue= 0x25 (37) -> ctx = [1101110]
-    whitening_encode(resultbuf, 0, result_data_size, ctx);
+    // uint8_t[] ctx = new uint8_t[7];
+    // whitening_init(ctxValue, ctx); // ctxValue= 0x25 (37) -> ctx = [1101110]
+    // whitening_encode(resultbuf, 0, result_data_size, ctx);
 
-    // resulting advertisment array has a length of constant 24 bytes
-    rfPayload = new uint8_t[24];
+    // // resulting advertisment array has a length of constant 24 bytes
+    // rfPayload = new uint8_t[24];
 
-    uint8_t lengthResultArray = addrLength + dataLength + 5;
+    // uint8_t lengthResultArray = addrLength + dataLength + 5;
 
-    if (lengthResultArray > rfPayload.Length)
-    {
-        return;
-    }
+    // if (lengthResultArray > rfPayload.Length)
+    // {
+    //     return;
+    // }
 
-    // Buffer.BlockCopy(resultbuf, 15, rfPayload, 0, lengthResultArray);
+    // // Buffer.BlockCopy(resultbuf, 15, rfPayload, 0, lengthResultArray);
 
-    // fill rest of array
-    for (uint8_t index = lengthResultArray; index < rfPayload.Length; index++)
-    {
-        rfPayload[index] = (byte)(index + 1);
-    }
+    // // fill rest of array
+    // for (uint8_t index = lengthResultArray; index < rfPayload.Length; index++)
+    // {
+    //     rfPayload[index] = (byte)(index + 1);
+    // }
 }
 
 //================================================================
