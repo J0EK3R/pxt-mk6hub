@@ -15,7 +15,7 @@ class CryptTool
 
     private:
     const uint8_t ctxValue = 0x25;
-    // const uint8_t addressArray[5] = {0xC1, 0xC2, 0xC3, 0xC4, 0xC5};
+    const uint8_t addressArray[5] = {0xC1, 0xC2, 0xC3, 0xC4, 0xC5};
 };
 
 //================================================================
