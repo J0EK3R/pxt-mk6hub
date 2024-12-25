@@ -109,16 +109,16 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     // uint8_t[] resultbuf = new uint8_t[result_data_size];
     uint8_t resultbuf[result_data_size];
 
-    resultbuf[15] = 113; // 0x71
-    resultbuf[16] = 15;  // 0x0f
-    resultbuf[17] = 85;  // 0x55
+    resultbuf[15] = 0x71; // 0x71 (113)
+    resultbuf[16] = 0x0f; // 0x0f (15)
+    resultbuf[17] = 0x55; // 0x55 (85)
 
-    // // copy firstDataArray reverse into targetArray with offset 18
-    // for (uint8_t index = 0; index < addrLength; index++)
-    // {
-    //     //resultbuf[data_offset + addrLength - index - 1] = addr[index];
-    //     resultbuf[index + data_offset] = addr[(addrLength - index) - 1];
-    // }
+    // copy firstDataArray reverse into targetArray with offset 18
+    for (uint8_t index = 0; index < addrLength; index++)
+    {
+        //resultbuf[data_offset + addrLength - index - 1] = addr[index];
+        resultbuf[index + data_offset] = addr[(addrLength - index) - 1];
+    }
 
     // //Buffer.BlockCopy(data, 0, resultbuf, addrLength + data_offset, dataLength);
     // // copy dataArray into resultbuf with offset 18 + addrLength
