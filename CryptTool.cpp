@@ -106,7 +106,7 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     uint8_t inverse_offset = 0x0f; // 0x0f (15)
 
     uint8_t result_data_size = data_offset + addrLength + dataLength + 2;
-    // uint8_t[] resultbuf = new uint8_t[result_data_size];
+    uint8_t[] resultbuf = new uint8_t[result_data_size];
 
     // resultbuf[15] = 113; // 0x71
     // resultbuf[16] = 15;  // 0x0f
