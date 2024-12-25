@@ -109,9 +109,9 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     // uint8_t[] resultbuf = new uint8_t[result_data_size];
     uint8_t resultbuf[result_data_size];
 
-    // resultbuf[15] = 113; // 0x71
-    // resultbuf[16] = 15;  // 0x0f
-    // resultbuf[17] = 85;  // 0x55
+    resultbuf[15] = 113; // 0x71
+    resultbuf[16] = 15;  // 0x0f
+    resultbuf[17] = 85;  // 0x55
 
     // // copy firstDataArray reverse into targetArray with offset 18
     // for (uint8_t index = 0; index < addrLength; index++)
