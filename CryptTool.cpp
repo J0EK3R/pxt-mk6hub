@@ -127,11 +127,11 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
         resultbuf[data_offset + addrLength + index] = data[index];
     }
 
-    // // crypt Bytes from position 15 to 22
-    // for (uint8_t index = inverse_offset; index < addrLength + data_offset; index++)
-    // {
-    //     resultbuf[index] = invert_8(resultbuf[index]);
-    // }
+    // crypt Bytes from position 15 to 22
+    for (uint8_t index = inverse_offset; index < addrLength + data_offset; index++)
+    {
+        resultbuf[index] = invert_8(resultbuf[index]);
+    }
 
     // // calc checksum und copy to array
     // uint16_t checksum = check_crc16(addr, data);
