@@ -14,8 +14,6 @@
         "linebeacon.cpp",
         "LineBeaconService.cpp",
         "LineBeaconService.h",
-        "MKBLEUtils.cpp",
-        "MKBLEUtils.h",
         "CryptTool.cpp",
         "CryptTool.h"
     ],

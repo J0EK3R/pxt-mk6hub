@@ -10,8 +10,12 @@
 
 class CryptTool
 {
-public:
-    void enCrypt(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue);
+    public:
+        void enCrypt(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue);
+
+    private:
+        const uint8_t ctxValue = 0x25;
+        const uint8_t addressArray[5] = {0xC1, 0xC2, 0xC3, 0xC4, 0xC5};
 };
 
 //================================================================
