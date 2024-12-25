@@ -120,12 +120,12 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
         resultbuf[index + data_offset] = addr[(addrLength - index) - 1];
     }
 
-    // //Buffer.BlockCopy(data, 0, resultbuf, addrLength + data_offset, dataLength);
-    // // copy dataArray into resultbuf with offset 18 + addrLength
-    // for (uint8_t index = 0; index < dataLength; index++)
-    // {
-    //     resultbuf[data_offset + addrLength + index] = data[index];
-    // }
+    //Buffer.BlockCopy(data, 0, resultbuf, addrLength + data_offset, dataLength);
+    // copy dataArray into resultbuf with offset 18 + addrLength
+    for (uint8_t index = 0; index < dataLength; index++)
+    {
+        resultbuf[data_offset + addrLength + index] = data[index];
+    }
 
     // // crypt Bytes from position 15 to 22
     // for (uint8_t index = inverse_offset; index < addrLength + data_offset; index++)
