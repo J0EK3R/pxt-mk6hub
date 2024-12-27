@@ -94,7 +94,7 @@ static void whitening_encode(uint8_t data[], const uint8_t dataStartIndex, const
     }
 }
 
-void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue) {
+void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue, const uint8_t *rfPayload) {
 
     MICROBIT_DEBUG_DMESG("CryptTool::get_rf_payload");
 
