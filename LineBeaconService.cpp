@@ -78,6 +78,12 @@
 static uint8_t              m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 static uint8_t              m_enc_advdata[ BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
+/// CTXValue for Encryption
+/// </summary>
+static uint8_t ctxValue = 0x25;
+static uint8_t addressArray[5] = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
+static uint8_t  telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
+
 static uint8_t m_beacon_info[31] = 
 {
     0x02,
@@ -96,7 +102,6 @@ static uint8_t m_beacon_info[31] =
  */
 static void advertising_init(const uint8_t *hwid, const uint8_t *message, const uint8_t len)
 {
-
     // uint8_t frameData[ MicroBitEddystone::frameSizeUID]; 組み立てるか。。。それもまたよし。。。
     // m_beacon_info[12] = hwid[0];
     // m_beacon_info[13] = hwid[1];
@@ -108,6 +113,8 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
 
     // memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
     // memcpy(&m_beacon_info[18], message, len);
+
+    cryptTool.get_rf_payload(addressArray, 5, telegram_Connect, 8, ctxValue, m_beacon_info);
 
     ble_gap_adv_params_t    gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -159,7 +166,8 @@ static void ble_stack_init(void)
 
 
 LineBeaconService::LineBeaconService() {
-    ble_stack_init();   
+    ble_stack_init();
+    cryptTool = new CryptTool();
 }
 
 /**

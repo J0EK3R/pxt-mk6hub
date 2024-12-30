@@ -1,8 +1,8 @@
-#include "MicroBitConfig.h"
 #include "CryptTool.h"
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 static uint8_t invert_8(const uint8_t value) 
 {
@@ -94,9 +94,9 @@ static void whitening_encode(uint8_t data[], const uint8_t dataStartIndex, const
     }
 }
 
-void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue, const uint8_t *rfPayload) {
+void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue, uint8_t *rfPayload) {
 
-    MICROBIT_DEBUG_DMESG("CryptTool::get_rf_payload");
+    // MICROBIT_DEBUG_DMESG("CryptTool::get_rf_payload");
 
     uint8_t data_offset = 0x12; // 0x12 (18)
     uint8_t inverse_offset = 0x0f; // 0x0f (15)
@@ -134,18 +134,19 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     resultbuf[result_data_size - 1] = static_cast<uint8_t>((checksum >> 8) & 0xff);
 
     // uint8_t[] ctx_0x3F = new uint8_t[7]; // int local_58[8];
-    // uint8_t[7] ctx_0x3F;
-    // whitening_init(0x3f, ctx_0x3F); // 0x3f (63) -> ctx_0x3F = [1111111]
-    // whitening_encode(resultbuf, 0x12, addrLength + dataLength + 2, ctx_0x3F);
+    uint8_t ctx_0x3F[7];
+    whitening_init(0x3f, ctx_0x3F); // 0x3f (63) -> ctx_0x3F = [1111111]
+    whitening_encode(resultbuf, 0x12, addrLength + dataLength + 2, ctx_0x3F);
 
-    // uint8_t[7] ctx; // = new uint8_t[7];
-    // whitening_init(ctxValue, ctx); // ctxValue= 0x25 (37) -> ctx = [1101110]
-    // whitening_encode(resultbuf, 0, result_data_size, ctx);
+    // uint8_t ctx = new uint8_t[7];
+    uint8_t ctx[7];
+    whitening_init(ctxValue, ctx); // ctxValue= 0x25 (37) -> ctx = [1101110]
+    whitening_encode(resultbuf, 0, result_data_size, ctx);
 
     // // resulting advertisment array has a length of constant 24 bytes
     // rfPayload = new uint8_t[24];
 
-    // uint8_t lengthResultArray = addrLength + dataLength + 5;
+    uint8_t lengthResultArray = addrLength + dataLength + 5;
 
     // if (lengthResultArray > rfPayload.Length)
     // {
@@ -153,10 +154,11 @@ void CryptTool::get_rf_payload(const uint8_t *addr, const uint8_t addrLength, co
     // }
 
     // // Buffer.BlockCopy(resultbuf, 15, rfPayload, 0, lengthResultArray);
+    memcpy(&rfPayload[12], resultbuf, sizeof(uint8_t) * lengthResultArray);
 
-    // // fill rest of array
-    // for (uint8_t index = lengthResultArray; index < rfPayload.Length; index++)
-    // {
-    //     rfPayload[index] = (byte)(index + 1);
-    // }
+    // fill rest of array
+    for (uint8_t index = lengthResultArray; index < 24; index++)
+    {
+        rfPayload[index] = index + 1;
+    }
 }

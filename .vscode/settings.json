@@ -15,5 +15,9 @@
         "**/yotta_modules": true,
         "**/yotta_targets": true,
         "**/pxt_modules": true
+    },
+    "cmake.sourceDirectory": "/home/jochen/projects/makecode/pxt-mk6hub/node_modules/pxt-common-packages/libs/core---esp32",
+    "files.associations": {
+        "system_error": "cpp"
     }
 }

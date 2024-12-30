@@ -3,6 +3,7 @@
 
 #include "MicroBitConfig.h"
 #include "pxt.h"
+#include "CryptTool.h"
 
 //================================================================
 #if MICROBIT_CODAL
@@ -22,16 +23,17 @@ class LineBeaconService
     void stop();
     
     private:
+      CryptTool cryptTool;
 
-    // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
-    const uint8_t flags[1] = {0x06};
-    const uint8_t linecorp[2] = {0x5F, 0xFE};
-    const uint8_t hwidframe[9] = {
-        0x5F, 0xFE, // LINE corp
-        0x02,       // Frame Type
-        0x00, 0x00, 0x00, 0x00, 0x00,   // HWID 
-        0x7F        // Measured TxPower
-    };
+      // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
+      const uint8_t flags[1] = {0x06};
+      const uint8_t linecorp[2] = {0x5F, 0xFE};
+      const uint8_t hwidframe[9] = {
+          0x5F, 0xFE,                   // LINE corp
+          0x02,                         // Frame Type
+          0x00, 0x00, 0x00, 0x00, 0x00, // HWID
+          0x7F                          // Measured TxPower
+      };
 };
 
 //================================================================
