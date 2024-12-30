@@ -1,5 +1,5 @@
 #include "MicroBitConfig.h"
-#include "LineBeaconService.h"
+#include "MK6HubService.h"
 
 //================================================================
 #if MICROBIT_CODAL
@@ -165,7 +165,7 @@ static void ble_stack_init(void)
 }
 
 
-LineBeaconService::LineBeaconService() {
+MK6HubService::MK6HubService() {
     ble_stack_init();
     cryptTool = new CryptTool();
 }
@@ -178,9 +178,9 @@ static void advertising_stop(void) {
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
 
-void LineBeaconService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
+void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
 
-    MICROBIT_DEBUG_DMESG("LineBeaconService::start");
+    MICROBIT_DEBUG_DMESG("MK6HubService::start");
     // uBit.display.print("start");
 
     advertising_init(hwid, message, len);
@@ -191,7 +191,7 @@ void LineBeaconService::start(const uint8_t *hwid, const uint8_t *message, const
 
 }
 
-void LineBeaconService::stop() {
+void MK6HubService::stop() {
     // uBit.display.print("stop");
     advertising_stop();
 }
@@ -204,12 +204,12 @@ void LineBeaconService::stop() {
 
 /**
  * Constructor.
- * Create a representation of the LineBeaconService
+ * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-LineBeaconService::LineBeaconService(BLEDevice &_ble) : ble(_ble) {}
+MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {}
 
-void LineBeaconService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
+void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
     ble.gap().startAdvertising();
 
     GapAdvertisingData payload;
@@ -234,7 +234,7 @@ void LineBeaconService::start(const uint8_t *hwid, const uint8_t *message, const
     ble.startAdvertising();
 }
 
-void LineBeaconService::stop() {
+void MK6HubService::stop() {
     // これだとなぜか止まらない？
     // ble.gap().stopAdvertising();
     uBit.bleManager.stopAdvertising();

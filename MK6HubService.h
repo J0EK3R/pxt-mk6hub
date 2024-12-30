@@ -1,5 +1,5 @@
-#ifndef LINEBEACON_SERVICE_H
-#define LINEBEACON_SERVICE_H
+#ifndef MK6HUB_SERVICE_H
+#define MK6HUB_SERVICE_H
 
 #include "MicroBitConfig.h"
 #include "pxt.h"
@@ -15,10 +15,10 @@
 // https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/MicroBitBLEService.h
 // #include "MicroBitBLEService.h" 
 
-class LineBeaconService
+class MK6HubService
 {
     public:
-    LineBeaconService();
+    MK6HubService();
     void start(const uint8_t *hwid, const uint8_t *message, const uint8_t len);
     void stop();
     
@@ -48,7 +48,7 @@ class LineBeaconService
   * Class definition for the LineBeacon service.
   * Provides a BLE service to receive LineBeaconMessages
   */
-class LineBeaconService
+class MK6HubService
 {
     public:
 
@@ -57,7 +57,7 @@ class LineBeaconService
       * Create a representation of the BlueDotService
       * @param _ble The instance of a BLE device that we're running on.
       */
-    LineBeaconService(BLEDevice &_ble);
+    MK6HubService(BLEDevice &_ble);
     void start(const uint8_t *hwid, const uint8_t *message, const uint8_t len);
     void stop();
 

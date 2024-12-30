@@ -1,5 +1,5 @@
 #include "pxt.h"
-#include "LineBeaconService.h"
+#include "MK6HubService.h"
 #include <stdio.h>
 #include <ctype.h>
 #include "MicroBitConfig.h"
@@ -10,9 +10,9 @@ using namespace pxt;
  * Support for LINE Beacon.
  */
 //% color=#00c300 weight=100 icon="\uf294" block="LINE Beacon"
-namespace linebeacon {
+namespace mk6hub {
 
-    LineBeaconService* _pService = NULL;
+    MK6HubService* _pService = NULL;
 
     int hexStringToBytes(String strData, uint8_t *data, uint8_t maxlen) {
         
@@ -63,9 +63,9 @@ namespace linebeacon {
 
         if (NULL == _pService) {
 #if MICROBIT_CODAL
-            _pService = new LineBeaconService();
+            _pService = new MK6HubService();
 #else
-            _pService = new LineBeaconService(*uBit.ble);
+            _pService = new MK6HubService(*uBit.ble);
 #endif
         }
 

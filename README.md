@@ -8,11 +8,11 @@
 
 ### for micro:bit v2
 
-This linebeacon extension conflicts with bluetooth extension, so can't be used together.
+This mk6hub extension conflicts with bluetooth extension, so can't be used together.
 
 ### for micro:bit v1
 
-This linebeacon extension works with bluetooth extension.
+This mk6hub extension works with bluetooth extension.
 
 
 ## Usage
@@ -39,18 +39,18 @@ first compile takes few minutes.
 ```blocks
 input.onButtonPressed(Button.A, function () {
     basic.showIcon(IconNames.Yes)
-    linebeacon.start("0f0f0f0f0f")
+    mk6hub.start("0f0f0f0f0f")
 })
 input.onButtonPressed(Button.AB, function () {
     basic.showIcon(IconNames.Yes)
-    linebeacon.startWithDeviceMessage(
+    mk6hub.startWithDeviceMessage(
     "0f0f0f0f0f",
     "1a2b3c4d5e6f70809010a0b0c0"
     )
 })
 input.onButtonPressed(Button.B, function () {
     basic.showIcon(IconNames.No)
-    linebeacon.stop()
+    mk6hub.stop()
 })
 basic.showIcon(IconNames.Heart)
 ```
