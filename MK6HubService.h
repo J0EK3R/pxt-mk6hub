@@ -3,7 +3,6 @@
 
 #include "MicroBitConfig.h"
 #include "pxt.h"
-#include "CryptTool.h"
 
 //================================================================
 #if MICROBIT_CODAL
@@ -23,8 +22,6 @@ class MK6HubService
     void stop();
     
     private:
-      CryptTool cryptTool;
-
       // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
       const uint8_t flags[1] = {0x06};
       const uint8_t linecorp[2] = {0x5F, 0xFE};

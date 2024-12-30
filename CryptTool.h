@@ -3,10 +3,6 @@
 
 #include "pxt.h"
 
-class CryptTool
-{
-    public:
-    void get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue, uint8_t *rfPayload);
-};
+void get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue, uint8_t *rfPayload);
 
 #endif
