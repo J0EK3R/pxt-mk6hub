@@ -1,6 +1,8 @@
 #ifndef CRYPTTOOL_H
 #define CRYPTTOOL_H
 
+#include "pxt.h"
+
 class CryptTool
 {
     public:
