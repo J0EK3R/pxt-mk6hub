@@ -96,20 +96,17 @@ static void whitening_encode(uint8_t data[], const uint8_t dataStartIndex, const
 
 void get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t *data, const uint8_t dataLength, const uint8_t ctxValue, uint8_t *rfPayload) {
 
-    // MICROBIT_DEBUG_DMESG("CryptTool::get_rf_payload");
-
-    uint8_t data_offset = 0x12; // 0x12 (18)
-    uint8_t inverse_offset = 0x0f; // 0x0f (15)
+    uint8_t data_offset = 0x12;     // 0x12 (18)
+    uint8_t inverse_offset = 0x0f;  // 0x0f (15)
 
     uint8_t result_data_size = data_offset + addrLength + dataLength + 2;
-    // uint8_t[] resultbuf = new uint8_t[result_data_size];
     uint8_t resultbuf[result_data_size];
 
     resultbuf[15] = 0x71; // 0x71 (113)
     resultbuf[16] = 0x0f; // 0x0f (15)
     resultbuf[17] = 0x55; // 0x55 (85)
 
-    // copy firstDataArray reverse into targetArray with offset 18
+    // copy addrArray reverse into resultbuf with offset 18
     for (uint8_t index = 0; index < addrLength; index++)
     {
         //resultbuf[data_offset + addrLength - index - 1] = addr[index];
@@ -123,7 +120,7 @@ void get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t
     }
 
     // crypt Bytes from position 15 to 22
-    for (uint8_t index = inverse_offset; index < addrLength + data_offset; index++)
+    for (uint8_t index = inverse_offset; index < (addrLength + data_offset); index++)
     {
         resultbuf[index] = invert_8(resultbuf[index]);
     }
@@ -154,11 +151,11 @@ void get_rf_payload(const uint8_t *addr, const uint8_t addrLength, const uint8_t
     // }
 
     // // Buffer.BlockCopy(resultbuf, 15, rfPayload, 0, lengthResultArray);
-    memcpy(&rfPayload[12], resultbuf, sizeof(uint8_t) * lengthResultArray);
+    memcpy(&rfPayload[7], &resultbuf[15], sizeof(uint8_t) * lengthResultArray);
 
     // fill rest of array
     for (uint8_t index = lengthResultArray; index < 24; index++)
     {
-        rfPayload[index] = index + 1;
+        rfPayload[index+ 7] = index + 1;
     }
 }

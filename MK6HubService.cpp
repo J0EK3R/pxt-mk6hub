@@ -121,7 +121,7 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
     gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
     ble_gap_adv_data_t  gap_adv_data;
-    memset( &gap_adv_data, 0, sizeof( gap_adv_data));
+    memset(&gap_adv_data, 0, sizeof( gap_adv_data));
     gap_adv_data.adv_data.p_data    = m_rf_payload;
     gap_adv_data.adv_data.len       = 31;
 
