@@ -1,20 +1,16 @@
 /// <reference no-default-lib="true"/>
 /**
- * Support for LINE Beacon.
+ * Support for MK6 Hub.
  */
-//% color=#00c300 weight=100 icon="\uf294" block="LINE Beacon"
+//% color=#00c300 weight=100 icon="\uf294" block="MK6 Hub"
 namespace mk6hub {
 
-    // TODO: Semantic UI が Font Awesome v5.0.0 に対応したらアイコンを Bluetooth のものから LINE に変更すること
-    // color="#00c300" weight=100 icon="\uf3c0"
-
     /**
-    *  LINE Beacon Start
+    *  MK6 Hub Start
     * @param hwid hex HWID, eg: "0f0f0f0f0f"
     */
     //% blockId=mk6hub_start 
-    //% block="LINE Beacon start HWID is %hwid"
-    //% block.loc.ja="LINE Beacon の HWID を %hwid にして開始" 
+    //% block="MK6 Hub start HWID is %hwid"
     //% blockGap=8 weight=60
     // //% help=pxt-mk6hub/start 
     // help は省略すると README が表示される。
@@ -29,13 +25,12 @@ namespace mk6hub {
     }
 
     /**
-    *  LINE Beacon Start with Device Message. 1 byte to 13 bytes.
+    *  MK6 Hub Start with Device Message. 1 byte to 13 bytes.
     * @param hwid hex HWID, eg: "0f0f0f0f0f"
     * @param message hex Device Message 1byte to 13byte, eg: "1a2b3c4d5e6f70809010a0b0c0"
     */
     //% blockId=mk6hub_start_with_devicemessage
-    //% block="LINE Beacon start HWID is %hwid|with Device Message %message"
-    //% block.loc.ja="LINE Beacon の HWID を %hwid|デバイスメッセージを %message にして開始" 
+    //% block="MK6 Hub start HWID is %hwid|with Device Message %message"
     //% shim=mk6hub::startWithDeviceMessage
     //% blockGap=8 weight=55 blockExternalInputs=1
     // //% help=pxt-mk6hub/start-with-device-message
@@ -56,11 +51,10 @@ namespace mk6hub {
 
 
     /**
-     * Stops advertising LINE Beacon end points
+     * Stops advertising MK6 Hub end points
      */
     //% blockId=mk6hub_stop
-    //% block="LINE Beacon stop"
-    //% block.loc.ja="LINE Beacon を停止"
+    //% block="MK6 Hub stop"
     //% shim=mk6hub::stop
     //% weight=10 blockGap=8 advanced=true
     export function stop() {
@@ -68,11 +62,10 @@ namespace mk6hub {
     };
 
 //     /**
-//      * Stops advertising LINE Beacon end points
+//      * Stops advertising MK6 Hub end points
 //      */
 //     //% blockId=mk6hub_central
-//     //% block="LINE Beacon central"
-//     //% block.loc.ja="LINE Beacon を受信"
+//     //% block="MK6 Hub central"
 //     //% weight=10 blockGap=8 advanced=true
 //     //% group="micro:bit (V2)"
 //     export function onCentralEvent() {

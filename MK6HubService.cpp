@@ -88,7 +88,7 @@ static uint8_t m_rf_payload[31] =
 {
     0x02, // length: 0x2 (2)
     0x01, // type:   flags (0x01)
-    0x02,
+    0x06,
 
     0x1b, // length: 0x1b (27)
     0xff, // type:   manufacturer specific (0xff)

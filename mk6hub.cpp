@@ -7,9 +7,9 @@
 using namespace pxt;
 
 /**
- * Support for LINE Beacon.
+ * Support for MK6 Hub.
  */
-//% color=#00c300 weight=100 icon="\uf294" block="LINE Beacon"
+//% color=#00c300 weight=100 icon="\uf294" block="MK6 Hub"
 namespace mk6hub {
 
     MK6HubService* _pService = NULL;
@@ -51,13 +51,13 @@ namespace mk6hub {
 
         if (h.length() != 10) {
             uBit.display.clear();
-            uBit.display.print("LINE Beacon HWID is invalid.");
+            uBit.display.print("MK6 Hub HWID is invalid.");
             return;
         }
 
         if (m.length() > 26 || m.length() % 2 != 0) {
             uBit.display.clear();
-            uBit.display.print("LINE Beacon Message is invalid.");
+            uBit.display.print("MK6 Hub Message is invalid.");
             return;
         }
 
@@ -72,7 +72,7 @@ namespace mk6hub {
         uint8_t hwidBytes[5];
         if (hexStringToBytes(hwid, hwidBytes, 5) != MICROBIT_OK) {
             uBit.display.clear();
-            uBit.display.print("LINE Beacon HWID is invalid.");               
+            uBit.display.print("MK6 Hub HWID is invalid.");               
         }
 
         uint8_t msglen = m.length() / 2;
@@ -82,7 +82,7 @@ namespace mk6hub {
         uint8_t messageBytes[msglen];
         if (hexStringToBytes(message, messageBytes, msglen) != MICROBIT_OK) {
             uBit.display.clear();
-            uBit.display.print("LINE Beacon Message is invalid.");               
+            uBit.display.print("MK6 Hub Message is invalid.");               
         }
 
         _pService->start(hwidBytes, messageBytes, msglen);

@@ -1,7 +1,7 @@
 {
-  "mk6hub.startWithDeviceMessage|block": "LINE Beacon start HWID is %hwid|with Device Message %message",
-  "mk6hub.start|block": "LINE Beacon start HWID is %hwid",
-  "mk6hub.stop|block": "LINE Beacon stop",
-  "mk6hub|block": "LINE Beacon",
+  "mk6hub.startWithDeviceMessage|block": "MK6 Hub start HWID is %hwid|with Device Message %message",
+  "mk6hub.start|block": "MK6 Hub start HWID is %hwid",
+  "mk6hub.stop|block": "MK6 Hub stop",
+  "mk6hub|block": "MK6 Hub",
   "{id:category}MK6Hub": "MK6Hub"
 }

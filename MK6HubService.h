@@ -22,7 +22,6 @@ class MK6HubService
     void stop();
     
     private:
-      // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
       const uint8_t flags[1] = {0x06};
       const uint8_t linecorp[2] = {0x5F, 0xFE};
       const uint8_t hwidframe[9] = {
@@ -63,7 +62,6 @@ class MK6HubService
     // Bluetooth stack we're running on.
     BLEDevice           	&ble;
 
-    // https://github.com/line/line-simple-beacon/blob/master/README.ja.md
     const uint8_t flags[1] = {0x06};
     const uint8_t linecorp[2] = {0x7F, 0xFE};
     const uint8_t hwidframe[9] = {
