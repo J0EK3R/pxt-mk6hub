@@ -76,24 +76,26 @@
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
-static uint8_t              m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
-static uint8_t              m_enc_advdata[ BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
+static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
+static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
 /// CTXValue for Encryption
-/// </summary>
 static uint8_t ctxValue = 0x25;
 static uint8_t addressArray[5] = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
 
-static uint8_t m_beacon_info[31] = 
+static uint8_t m_rf_payload[31] = 
 {
+    0x02, // length: 0x2 (2)
+    0x01, // type:   flags (0x01)
     0x02,
-    0x01,
-    0x06,
-    0x1b, 0xff, 0xf0, 0xff, 0x6d, 0xb6, 0x43, 0xcf,
-    0x7e, 0x8f, 0x47, 0x11, 0x88, 0x5d, 0x68, 0x38,
-    0xd1, 0x7a, 0xaa, 0x26, 0x7a, 0x3d, 0x13, 0x14,
-    0x15, 0x16, 0x17, 0x18
+
+    0x1b, // length: 0x1b (27)
+    0xff, // type:   manufacturer specific (0xff)
+    0xf0, 0xff, // company Id: unkown 0xfff0
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
   };
 
 /**@brief Function for initializing the Advertising functionality.
@@ -103,19 +105,7 @@ static uint8_t m_beacon_info[31] =
  */
 static void advertising_init(const uint8_t *hwid, const uint8_t *message, const uint8_t len)
 {
-    // uint8_t frameData[ MicroBitEddystone::frameSizeUID]; 組み立てるか。。。それもまたよし。。。
-    // m_beacon_info[12] = hwid[0];
-    // m_beacon_info[13] = hwid[1];
-    // m_beacon_info[14 = hwid[2];
-    // m_beacon_info[7] = hwid[3];
-    // m_beacon_info[8] = hwid[4];
-    // m_beacon_info[7] = 10 + len;
-    // memcpy(&m_beacon_info[12], hwid,sizeof(uint8_t) * 5);
-
-    // memset(&m_beacon_info[18], 0, sizeof(uint8_t) * 13);
-    // memcpy(&m_beacon_info[18], message, len);
-
-    get_rf_payload(addressArray, 5, telegram_Connect, 8, ctxValue, m_beacon_info);
+    get_rf_payload(addressArray, 5, telegram_Connect, 8, ctxValue, m_rf_payload);
 
     ble_gap_adv_params_t    gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -132,7 +122,7 @@ static void advertising_init(const uint8_t *hwid, const uint8_t *message, const 
 
     ble_gap_adv_data_t  gap_adv_data;
     memset( &gap_adv_data, 0, sizeof( gap_adv_data));
-    gap_adv_data.adv_data.p_data    = m_beacon_info;
+    gap_adv_data.adv_data.p_data    = m_rf_payload;
     gap_adv_data.adv_data.len       = 31;
 
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
