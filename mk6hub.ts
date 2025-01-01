@@ -58,8 +58,8 @@ namespace mk6hub {
     //% blockId=mk6hub_stop
     //% block="MK6 Hub stop"
     //% shim=mk6hub::stop
-    //% weight=10 blockGap=8 advanced=true
-    export function stop() {
+    //% weight=10 blockGap=8
+    export function stop(): void {
         return;
     };
 
@@ -69,7 +69,7 @@ namespace mk6hub {
     */
     //% blockId=mk6hub_getversion 
     //% block="MK6 Hub get Version"
-    //% blockGap=8 weight=60
+    //% blockGap=8 weight=60 advanced=true
     export function getversion(): number {
         return 0;
     }
