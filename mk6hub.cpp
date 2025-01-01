@@ -65,7 +65,7 @@ namespace mk6hub {
 
 
     //% 
-    uint8_t getversion() {        
+    uint8_t getVersion() {        
 
         createService();
 
