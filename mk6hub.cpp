@@ -36,7 +36,7 @@ namespace mk6hub {
 
 
     //% 
-    void setChannel(uint8_t channel, uint8_t value) {        
+    void setChannel(uint8_t channel, int8_t value) {        
 
         createService();
 

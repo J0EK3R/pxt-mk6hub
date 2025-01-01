@@ -20,14 +20,14 @@ class MK6HubService
     MK6HubService();
     void connect();
     void stop();
-    void setChannel(uint8_t channel, uint8_t value);
+    void setChannel(uint8_t channel, int8_t value);
     void sendData();
 
     uint8_t getVersion();
 
   private:
     uint8_t channelValues[6] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
 };
 
 //================================================================
@@ -51,7 +51,7 @@ class MK6HubService
     MK6HubService(BLEDevice &_ble);
     void connect();
     void stop();
-    void setChannel(uint8_t channel, uint8_t value);
+    void setChannel(uint8_t channel, int8_t value);
     void sendData();
 
     uint8_t getVersion();
@@ -59,10 +59,10 @@ class MK6HubService
     private:
 
     // Bluetooth stack we're running on.
-    BLEDevice           	&ble;
+    BLEDevice &ble;
 
     uint8_t channelValues[6] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
 };
 
 //================================================================
