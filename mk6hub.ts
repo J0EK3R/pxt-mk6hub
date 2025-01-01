@@ -25,6 +25,7 @@ namespace mk6hub {
     */
     //% blockId=mk6hub_connect 
     //% block="MK6 Hub connect"
+    //% shim=mk6hub::connect
     //% blockGap=8 weight=60
     export function connect(): void {
         return;
@@ -37,6 +38,7 @@ namespace mk6hub {
     */
     //% blockId=mk6hub_setchannel 
     //% block="MK6 Hub set %channel to value %value"
+    //% shim=mk6hub::setChannel
     //% blockGap=8 weight=60
     export function setChannel(channel: Channel, value: number): void {
         return;
@@ -47,6 +49,7 @@ namespace mk6hub {
     */
     //% blockId=mk6hub_senddata 
     //% block="MK6 Hub send data"
+    //% shim=mk6hub::sendData
     //% blockGap=8 weight=60
     export function senddata(): void {
         return;
@@ -69,6 +72,7 @@ namespace mk6hub {
     */
     //% blockId=mk6hub_getversion 
     //% block="MK6 Hub get Version"
+    //% shim=mk6hub::getVersion
     //% blockGap=8 weight=60 advanced=true
     export function getversion(): number {
         return 0;
