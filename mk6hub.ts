@@ -32,9 +32,11 @@ namespace mk6hub {
 
     /**
     *  MK6 Hub SetChannel
+    * @param channel channel, eg: "Channel A"
+    * @param value -127..127, eg: "value 0"
     */
     //% blockId=mk6hub_setchannel 
-    //% block="MK6 Hub set channel"
+    //% block="MK6 Hub set Channel %channel vakue %value"
     //% blockGap=8 weight=60
     export function setChannel(channel: Channel, value: number): void {
         return;
