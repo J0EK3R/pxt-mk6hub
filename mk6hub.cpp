@@ -52,6 +52,7 @@ namespace mk6hub {
         _pService->sendData();
     }   
 
+
     //% 
     void stop() {        
 
@@ -60,5 +61,14 @@ namespace mk6hub {
         }        
 
         // uBit.bleManager.stopAdvertising();  
+    }   
+
+
+    //% 
+    void getversion() {        
+
+        createService();
+
+        return _pService->getVersion();
     }   
 }

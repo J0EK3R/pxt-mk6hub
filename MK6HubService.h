@@ -23,6 +23,8 @@ class MK6HubService
     void setChannel(uint8_t channel, uint8_t value);
     void sendData();
 
+    uint8_t getVersion();
+
   private:
     uint8_t channelValues[6] = {
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -51,6 +53,8 @@ class MK6HubService
     void stop();
     void setChannel(uint8_t channel, uint8_t value);
     void sendData();
+
+    uint8_t getVersion();
 
     private:
 

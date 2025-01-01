@@ -122,7 +122,7 @@ static void advertising_init(const uint8_t *data, const uint8_t dataLength)
 
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
-    
+
     gap_adv_data.adv_data.p_data    = m_rf_payload;
     gap_adv_data.adv_data.len       = 31;
 
@@ -207,6 +207,12 @@ void MK6HubService::sendData() {
     advertising_start();
 }
 
+
+uint8_t MK6HubService::getVersion() {
+
+    return 1;
+}
+
 //================================================================
 #else // MICROBIT_CODAL
 //================================================================
@@ -242,6 +248,12 @@ void MK6HubService::sendData() {
 void MK6HubService::stop() {
     // ble.gap().stopAdvertising();
     uBit.bleManager.stopAdvertising();
+}
+
+
+uint8_t MK6HubService::getVersion() {
+
+    return 2;
 }
 
 //================================================================

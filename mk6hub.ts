@@ -62,4 +62,15 @@ namespace mk6hub {
     export function stop() {
         return;
     };
+
+
+    /**
+    *  MK6 Hub get Version
+    */
+    //% blockId=mk6hub_getversion 
+    //% block="MK6 Hub get Version"
+    //% blockGap=8 weight=60
+    export function getversion(): number {
+        return 0;
+    }
 }
