@@ -18,6 +18,13 @@
     },
     "cmake.sourceDirectory": "/home/jochen/projects/makecode/pxt-mk6hub/node_modules/pxt-common-packages/libs/core---esp32",
     "files.associations": {
-        "system_error": "cpp"
+        "system_error": "cpp",
+        "optional": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "ostream": "cpp"
     }
 }

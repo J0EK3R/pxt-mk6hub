@@ -79,10 +79,10 @@
 static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
-/// CTXValue for Encryption
-static uint8_t ctxValue = 0x25;
+static uint8_t ctxValue = 0x25; // CTXValue for Encryption
 static uint8_t addressArray[5] = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
+static uint8_t telegram_Data[10] = { 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E, };
 
 static uint8_t m_rf_payload[31] = 
 {
@@ -154,11 +154,6 @@ static void ble_stack_init(void)
     MICROBIT_BLE_ECHK(nrf_sdh_ble_enable(&ram_start));
 }
 
-
-MK6HubService::MK6HubService() {
-    ble_stack_init();
-}
-
 /**
  * @brief Function for stop advertising.
  */
@@ -166,6 +161,12 @@ static void advertising_stop(void) {
     MICROBIT_DEBUG_DMESG("stopAdvertising");
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
+
+
+MK6HubService::MK6HubService() {
+    ble_stack_init();
+}
+
 
 void MK6HubService::connect() {
 
@@ -179,9 +180,29 @@ void MK6HubService::connect() {
     advertising_start();
 }
 
+
+void MK6HubService::setChannel(uint8_t channel, uint8_t value) {
+
+    MICROBIT_DEBUG_DMESG("MK6HubService::setChannel");
+
+    channelValues[channel] = value;
+}
+
+
 void MK6HubService::stop() {
     // uBit.display.print("stop");
     advertising_stop();
+}
+
+void MK6HubService::sendData() {
+
+    memcpy(&telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
+
+    advertising_init(telegram_Data, 10);
+
+    // Start execution.
+    // NRF_LOG_INFO("Beacon example started.");
+    advertising_start();
 }
 
 //================================================================
@@ -196,10 +217,25 @@ void MK6HubService::stop() {
  * @param _ble The instance of a BLE device that we're running on.
  */
 MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {
+
 }
 
+
 void MK6HubService::connect() {
+
 }
+
+
+void MK6HubService::setChannel(uint8_t channel, uint8_t value) {
+
+    channelValues[channel] = value;
+}
+
+
+void MK6HubService::sendData() {
+
+}
+
 
 void MK6HubService::stop() {
     // ble.gap().stopAdvertising();

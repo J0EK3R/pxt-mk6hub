@@ -20,16 +20,21 @@ class MK6HubService
     MK6HubService();
     void connect();
     void stop();
-    
-    private:
-      const uint8_t flags[1] = {0x06};
-      const uint8_t linecorp[2] = {0x5F, 0xFE};
-      const uint8_t hwidframe[9] = {
-          0x5F, 0xFE,                   // LINE corp
-          0x02,                         // Frame Type
-          0x00, 0x00, 0x00, 0x00, 0x00, // HWID
-          0x7F                          // Measured TxPower
-      };
+    void setChannel(uint8_t channel, uint8_t value);
+    void sendData();
+
+  private:
+    uint8_t channelValues[6] = {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, };
+
+    const uint8_t flags[1] = {0x06};
+    const uint8_t linecorp[2] = {0x5F, 0xFE};
+    const uint8_t hwidframe[9] = {
+        0x5F, 0xFE,                   // LINE corp
+        0x02,                         // Frame Type
+        0x00, 0x00, 0x00, 0x00, 0x00, // HWID
+        0x7F                          // Measured TxPower
+    };
 };
 
 //================================================================
@@ -56,11 +61,16 @@ class MK6HubService
     MK6HubService(BLEDevice &_ble);
     void connect();
     void stop();
+    void setChannel(uint8_t channel, uint8_t value);
+    void sendData();
 
     private:
 
     // Bluetooth stack we're running on.
     BLEDevice           	&ble;
+
+    uint8_t channelValues[6] = {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, };
 
     const uint8_t flags[1] = {0x06};
     const uint8_t linecorp[2] = {0x7F, 0xFE};

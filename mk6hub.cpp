@@ -14,8 +14,7 @@ namespace mk6hub {
 
     MK6HubService* _pService = NULL;
 
-    //%
-    void connect() {
+    void createService() {
 
         if (NULL == _pService) {
 #if MICROBIT_CODAL
@@ -24,12 +23,36 @@ namespace mk6hub {
             _pService = new MK6HubService(*uBit.ble);
 #endif
         }
+    }
+
+
+    //%
+    void connect() {
+
+        createService();
 
         _pService->connect();
     }
 
     //% 
+    void setChannel(uint8_t channel, uint8_t value) {        
+
+        createService();
+
+        _pService->setChannel(channel, value);
+    }   
+
+    //% 
+    void sendData() {        
+
+        createService();
+
+        _pService->sendData();
+    }   
+
+    //% 
     void stop() {        
+        
         if (NULL != _pService) {
             _pService->stop();
         }        
