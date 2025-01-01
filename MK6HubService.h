@@ -25,16 +25,7 @@ class MK6HubService
 
   private:
     uint8_t channelValues[6] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, };
-
-    const uint8_t flags[1] = {0x06};
-    const uint8_t linecorp[2] = {0x5F, 0xFE};
-    const uint8_t hwidframe[9] = {
-        0x5F, 0xFE,                   // LINE corp
-        0x02,                         // Frame Type
-        0x00, 0x00, 0x00, 0x00, 0x00, // HWID
-        0x7F                          // Measured TxPower
-    };
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 };
 
 //================================================================
@@ -43,11 +34,8 @@ class MK6HubService
 
 #include "ble/BLE.h"
 
-// https://lancaster-university.github.io/microbit-docs/ble/eddystone/
-
 /**
-  * Class definition for the LineBeacon service.
-  * Provides a BLE service to receive LineBeaconMessages
+  * Class definition for the MK6HubService service.
   */
 class MK6HubService
 {
@@ -70,16 +58,7 @@ class MK6HubService
     BLEDevice           	&ble;
 
     uint8_t channelValues[6] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, };
-
-    const uint8_t flags[1] = {0x06};
-    const uint8_t linecorp[2] = {0x7F, 0xFE};
-    const uint8_t hwidframe[9] = {
-        0x7F, 0xFE, // LINE corp
-        0x02,       // Frame Type
-        0x00, 0x00, 0x00, 0x00, 0x00,   // HWID 
-        0x7F        // Measured TxPower
-    };
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 };
 
 //================================================================

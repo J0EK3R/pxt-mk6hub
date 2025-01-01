@@ -34,6 +34,7 @@ namespace mk6hub {
         _pService->connect();
     }
 
+
     //% 
     void setChannel(uint8_t channel, uint8_t value) {        
 
@@ -41,6 +42,7 @@ namespace mk6hub {
 
         _pService->setChannel(channel, value);
     }   
+
 
     //% 
     void sendData() {        
@@ -52,7 +54,7 @@ namespace mk6hub {
 
     //% 
     void stop() {        
-        
+
         if (NULL != _pService) {
             _pService->stop();
         }        

@@ -79,10 +79,10 @@
 static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
-static uint8_t ctxValue = 0x25; // CTXValue for Encryption
-static uint8_t addressArray[5] = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
+static uint8_t ctxValue            = 0x25; // CTXValue for Encryption
+static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
-static uint8_t telegram_Data[10] = { 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E, };
+static uint8_t telegram_Data[10]   = { 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E, };
 
 static uint8_t m_rf_payload[31] = 
 {
@@ -121,7 +121,8 @@ static void advertising_init(const uint8_t *data, const uint8_t dataLength)
     gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
     ble_gap_adv_data_t  gap_adv_data;
-    memset(&gap_adv_data, 0, sizeof( gap_adv_data));
+    memset(&gap_adv_data, 0, sizeof(gap_adv_data));
+    
     gap_adv_data.adv_data.p_data    = m_rf_payload;
     gap_adv_data.adv_data.len       = 31;
 
@@ -193,6 +194,7 @@ void MK6HubService::stop() {
     // uBit.display.print("stop");
     advertising_stop();
 }
+
 
 void MK6HubService::sendData() {
 
