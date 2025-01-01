@@ -103,11 +103,11 @@ static uint8_t m_rf_payload[31] =
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(const uint8_t *hwid, const uint8_t *message, const uint8_t len)
+static void advertising_init(const uint8_t *data, const uint8_t dataLength)
 {
-    get_rf_payload(addressArray, 5, telegram_Connect, 8, ctxValue, m_rf_payload);
+    get_rf_payload(addressArray, 5, data, dataLength, ctxValue, m_rf_payload);
 
-    ble_gap_adv_params_t    gap_adv_params;
+    ble_gap_adv_params_t gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
 
     // gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; //BLE_GAP_ADV_TYPE_EXTENDED_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; // BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED;
@@ -167,17 +167,16 @@ static void advertising_stop(void) {
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
 
-void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
+void MK6HubService::connect() {
 
-    MICROBIT_DEBUG_DMESG("MK6HubService::start");
+    MICROBIT_DEBUG_DMESG("MK6HubService::connect");
     // uBit.display.print("start");
 
-    advertising_init(hwid, message, len);
+    advertising_init(telegram_Connect, 8);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
     advertising_start();
-
 }
 
 void MK6HubService::stop() {
@@ -196,35 +195,13 @@ void MK6HubService::stop() {
  * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {}
+MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {
+}
 
-void MK6HubService::start(const uint8_t *hwid, const uint8_t *message, const uint8_t len) {
-    ble.gap().startAdvertising();
-
-    GapAdvertisingData payload;
-    payload.addData(GapAdvertisingData::FLAGS, flags, 1);
-    payload.addData(GapAdvertisingData::COMPLETE_LIST_16BIT_SERVICE_IDS, linecorp,
-                    sizeof(linecorp));
-
-    uint8_t buf[sizeof(hwidframe) / sizeof(hwidframe[0]) + len];
-    memcpy(buf, hwidframe, sizeof(uint8_t) * sizeof(hwidframe));
-
-    buf[3] = hwid[0];
-    buf[4] = hwid[1];
-    buf[5] = hwid[2];
-    buf[6] = hwid[3];
-    buf[7] = hwid[4];
-
-    memcpy(&buf[sizeof(hwidframe) / sizeof(hwidframe[0])], message, sizeof(uint8_t) * len);
-
-    payload.addData(GapAdvertisingData::SERVICE_DATA, buf, sizeof(buf));
-
-    ble.setAdvertisingData(payload);
-    ble.startAdvertising();
+void MK6HubService::connect() {
 }
 
 void MK6HubService::stop() {
-    // これだとなぜか止まらない？
     // ble.gap().stopAdvertising();
     uBit.bleManager.stopAdvertising();
 }

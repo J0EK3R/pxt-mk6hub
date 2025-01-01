@@ -18,7 +18,7 @@ class MK6HubService
 {
     public:
     MK6HubService();
-    void start(const uint8_t *hwid, const uint8_t *message, const uint8_t len);
+    void connect();
     void stop();
     
     private:
@@ -54,7 +54,7 @@ class MK6HubService
       * @param _ble The instance of a BLE device that we're running on.
       */
     MK6HubService(BLEDevice &_ble);
-    void start(const uint8_t *hwid, const uint8_t *message, const uint8_t len);
+    void connect();
     void stop();
 
     private:
