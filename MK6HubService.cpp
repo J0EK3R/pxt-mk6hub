@@ -182,7 +182,7 @@ void MK6HubService::connect() {
 }
 
 
-void MK6HubService::setChannel(uint8_t channel, int8_t value) {
+void MK6HubService::setChannel(uint8_t channel, float value) {
 
     MICROBIT_DEBUG_DMESG("MK6HubService::setChannel");
 
@@ -234,7 +234,7 @@ void MK6HubService::connect() {
 }
 
 
-void MK6HubService::setChannel(uint8_t channel, int8_t value) {
+void MK6HubService::setChannel(uint8_t channel, float value) {
 
     channelValues[channel] = (uint8_t)(value + 0x80);
 }

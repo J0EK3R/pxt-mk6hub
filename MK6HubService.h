@@ -20,7 +20,7 @@ class MK6HubService
     MK6HubService();
     void connect();
     void stop();
-    void setChannel(uint8_t channel, int8_t value);
+    void setChannel(uint8_t channel, float value);
     void sendData();
 
     uint8_t getVersion();
@@ -51,7 +51,7 @@ class MK6HubService
     MK6HubService(BLEDevice &_ble);
     void connect();
     void stop();
-    void setChannel(uint8_t channel, int8_t value);
+    void setChannel(uint8_t channel, float value);
     void sendData();
 
     uint8_t getVersion();
