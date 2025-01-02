@@ -21,11 +21,14 @@ class MK6HubService
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
+    void setChannelOffset(uint8_t channel, float offset);
     void sendData();
 
     uint8_t getVersion();
 
   private:
+    float channelOffsets[6] = {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
     uint8_t channelValues[6] = {
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
 };
@@ -52,6 +55,7 @@ class MK6HubService
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
+    void setChannelOffset(uint8_t channel, float offset);
     void sendData();
 
     uint8_t getVersion();
@@ -60,6 +64,9 @@ class MK6HubService
 
     // Bluetooth stack we're running on.
     BLEDevice &ble;
+
+    float channelOffsets[6] = {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
     uint8_t channelValues[6] = {
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };

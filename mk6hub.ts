@@ -45,6 +45,19 @@ namespace mk6hub {
     }
 
     /**
+    *  MK6 Hub SetChannelOffset
+    * @param channel channel, eg: "Channel A"
+    * @param offset -127..127, eg: "value 0"
+    */
+    //% blockId=mk6hub_setchanneloffset
+    //% block="MK6 Hub set %channel offset to value %offset"
+    //% shim=mk6hub::setChannelOffset
+    //% blockGap=8 weight=60
+    export function setChannelOffset(channel: Channel, offset: number): void {
+        return;
+    }
+
+    /**
     *  MK6 Hub SendData
     */
     //% blockId=mk6hub_senddata 
