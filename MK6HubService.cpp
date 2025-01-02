@@ -76,41 +76,22 @@
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
-static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
-static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
-
 static uint8_t ctxValue            = 0x25; // CTXValue for Encryption
 static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
-static uint8_t telegram_Data[10]   = { 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E, };
-
-static uint8_t m_rf_payload[31] = 
-{
-    0x02, // length: 0x2 (2)
-    0x01, // type:   flags (0x01)
-    0x06,
-
-    0x1b, // length: 0x1b (27)
-    0xff, // type:   manufacturer specific (0xff)
-    0xf0, 0xff, // company Id: unkown 0xfff0
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-  };
 
 /**@brief Function for initializing the Advertising functionality.
  *
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(const uint8_t *data, const uint8_t dataLength)
+void MK6HubService::advertising_init(const uint8_t *data, const uint8_t dataLength)
 {
     get_rf_payload(addressArray, 5, data, dataLength, ctxValue, m_rf_payload);
 
     ble_gap_adv_params_t gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
 
-    // gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; //BLE_GAP_ADV_TYPE_EXTENDED_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; // BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED;
     gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_CONNECTABLE_SCANNABLE_UNDIRECTED;
     gap_adv_params.p_peer_addr      = NULL;    // Undirected advertisement.
     gap_adv_params.filter_policy    = BLE_GAP_ADV_FP_ANY;
@@ -132,7 +113,7 @@ static void advertising_init(const uint8_t *data, const uint8_t dataLength)
 
 /**@brief Function for starting advertising.
  */
-static void advertising_start(void)
+void MK6HubService::advertising_start(void)
 {
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_start(m_adv_handle, APP_BLE_CONN_CFG_TAG));
 }
@@ -142,7 +123,7 @@ static void advertising_start(void)
  *
  * @details Initializes the SoftDevice and the BLE event interrupt.
  */
-static void ble_stack_init(void)
+void MK6HubService::ble_stack_init(void)
 {
     MICROBIT_BLE_ECHK(nrf_sdh_enable_request());
 
@@ -158,13 +139,22 @@ static void ble_stack_init(void)
 /**
  * @brief Function for stop advertising.
  */
-static void advertising_stop(void) {
+void MK6HubService::advertising_stop(void) {
     MICROBIT_DEBUG_DMESG("stopAdvertising");
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
 
 
-MK6HubService::MK6HubService() {
+MK6HubService::MK6HubService(uint8_t hubNo) {
+    m_hubNo = hubNo;
+
+    // patch telegram data
+    // 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E     // Hub A
+    // 0x62, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9D     // Hub B
+    // 0x63, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9C     // Hub C
+    m_telegram_Data[0] = 0x61 + m_hubNo;
+    m_telegram_Data[9] = 0x9E - m_hubNo;
+
     ble_stack_init();
 }
 
@@ -187,20 +177,20 @@ void MK6HubService::setChannel(uint8_t channel, float value) {
     MICROBIT_DEBUG_DMESG("MK6HubService::setChannel");
 
     if(value == 0) {
-        channelValues[channel] = 0x80;
+        m_channelValues[channel] = 0x80;
     }
     else if(value < 0) {
-        channelValues[channel] = (uint8_t)fmax(value - channelOffsets[channel] + 0x80, 0);
+        m_channelValues[channel] = (uint8_t)fmax(value - m_channelOffsets[channel] + 0x80, 0);
     }
     else {
-        channelValues[channel] = (uint8_t)fmin(value + channelOffsets[channel] + 0x80, 0xFF);
+        m_channelValues[channel] = (uint8_t)fmin(value + m_channelOffsets[channel] + 0x80, 0xFF);
     }
 }
 
 
 void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
 
-    channelOffsets[channel] = offset;
+    m_channelOffsets[channel] = offset;
 }
 
 
@@ -212,9 +202,9 @@ void MK6HubService::stop() {
 
 void MK6HubService::sendData() {
 
-    memcpy(&telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
+    memcpy(&m_telegram_Data[3], m_channelValues, sizeof(uint8_t) * 6);
 
-    advertising_init(telegram_Data, 10);
+    advertising_init(m_telegram_Data, 10);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
@@ -224,7 +214,7 @@ void MK6HubService::sendData() {
 
 uint8_t MK6HubService::getVersion() {
 
-    return 1;
+    return 2;
 }
 
 //================================================================
@@ -238,10 +228,9 @@ uint8_t MK6HubService::getVersion() {
  * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {
-
+MK6HubService::MK6HubService(uint8_t hubNo, BLEDevice &_ble) : ble(_ble) {
+    m_hubNo = hubNo;
 }
-
 
 void MK6HubService::connect() {
 
@@ -251,20 +240,20 @@ void MK6HubService::connect() {
 void MK6HubService::setChannel(uint8_t channel, float value) {
 
     if(value == 0) {
-        channelValues[channel] = 0x80;
+        m_channelValues[channel] = 0x80;
     }
     else if(value < 0) {
-        channelValues[channel] = (uint8_t)fmax(value - channelOffsets[channel] + 0x80, 0);
+        m_channelValues[channel] = (uint8_t)fmax(value - m_channelOffsets[channel] + 0x80, 0);
     }
     else {
-        channelValues[channel] = (uint8_t)fmin(value + channelOffsets[channel] + 0x80, 0xFF);
+        m_channelValues[channel] = (uint8_t)fmin(value + m_channelOffsets[channel] + 0x80, 0xFF);
     }
 }
 
 
 void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
 
-    channelOffsets[channel] = offset;
+    m_channelOffsets[channel] = offset;
 }
 
 
@@ -281,7 +270,7 @@ void MK6HubService::stop() {
 
 uint8_t MK6HubService::getVersion() {
 
-    return 2;
+    return 1;
 }
 
 //================================================================

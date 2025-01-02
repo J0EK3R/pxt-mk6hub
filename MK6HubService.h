@@ -17,7 +17,7 @@
 class MK6HubService
 {
     public:
-    MK6HubService();
+    MK6HubService(uint8_t hubNo);
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
@@ -27,10 +27,40 @@ class MK6HubService
     uint8_t getVersion();
 
   private:
-    float channelOffsets[6] = {
+    // number of hub [0..2]
+    uint8_t m_hubNo;
+
+    uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
+
+    float m_channelOffsets[6] = {
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-    uint8_t channelValues[6] = {
+
+    uint8_t m_channelValues[6] = {
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
+
+    uint8_t m_telegram_Data[10]   = { 
+      0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E }; // Hub A
+    //0x62, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9D     // Hub B
+    //0x63, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9C     // Hub C
+
+    uint8_t m_rf_payload[31] = {
+        0x02, // length: 0x2 (2)
+        0x01, // type:   flags (0x01)
+        0x06,
+
+        0x1b, // length: 0x1b (27)
+        0xff, // type:   manufacturer specific (0xff)
+        0xf0, 0xff, // company Id: unkown 0xfff0
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+      };
+
+
+    void ble_stack_init();
+    void advertising_start();
+    void advertising_init(const uint8_t *data, const uint8_t dataLength);
+    void advertising_stop();
 };
 
 //================================================================
@@ -51,7 +81,7 @@ class MK6HubService
       * Create a representation of the BlueDotService
       * @param _ble The instance of a BLE device that we're running on.
       */
-    MK6HubService(BLEDevice &_ble);
+    MK6HubService(uint8_t hubNo, BLEDevice &_ble);
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
@@ -65,10 +95,13 @@ class MK6HubService
     // Bluetooth stack we're running on.
     BLEDevice &ble;
 
-    float channelOffsets[6] = {
+    // number of hub [0..2]
+    uint8_t m_hubNo;
+
+    float m_channelOffsets[6] = {
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    uint8_t channelValues[6] = {
+    uint8_t m_channelValues[6] = {
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
 };
 

@@ -1,6 +1,6 @@
 /// <reference no-default-lib="true"/>
 /**
- * Support for MK6 Hub.
+ * Support for MK6Hub.
  */
 //% color=#00c300 weight=100 icon="\uf294" block="MK6 Hub"
 namespace mk6hub {
@@ -20,74 +20,89 @@ namespace mk6hub {
         F = 5
     }
 
+    export enum Hub {
+        //% block="Hub 1" enumval=0
+        A = 0,
+        //% block="Hub 2" enumval=1
+        B = 1,
+        //% block="Hub 3" enumval=2
+        C = 2,
+    }
+
     /**
-    *  MK6 Hub Connect
+    *  MK6Hub init
+    * @param hubNo hubNo, eg: "Hub A"
     */
-    //% blockId=mk6hub_connect 
-    //% block="MK6 Hub connect"
-    //% shim=mk6hub::connect
+    //% blockId=mk6hub_init
+    //% block="MK6Hub %hubNo init"
+    //% shim=mk6hub::init
     //% blockGap=8 weight=60
-    export function connect(): void {
+    export function init(hubNo: Hub): void {
         return;
     }
 
     /**
-    *  MK6 Hub SetChannel
+    *  MK6Hub SetChannel
+    * @param hubNo hubNo, eg: "Hub A"
     * @param channel channel, eg: "Channel A"
     * @param value -127..127, eg: "value 0"
     */
     //% blockId=mk6hub_setchannel 
-    //% block="MK6 Hub set %channel to value %value"
+    //% block="MK6Hub %hubNo set %channel to value %value"
     //% shim=mk6hub::setChannel
     //% blockGap=8 weight=60
-    export function setChannel(channel: Channel, value: number): void {
+    export function setChannel(hubNo: Hub, channel: Channel, value: number): void {
         return;
     }
 
     /**
-    *  MK6 Hub SetChannelOffset
+    *  MK6Hub SetChannelOffset
+    * @param hubNo hubNo, eg: "Hub A"
     * @param channel channel, eg: "Channel A"
     * @param offset -127..127, eg: "value 0"
     */
     //% blockId=mk6hub_setchanneloffset
-    //% block="MK6 Hub set %channel offset to value %offset"
+    //% block="MK6Hub %hubNo set %channel offset to value %offset"
     //% shim=mk6hub::setChannelOffset
     //% blockGap=8 weight=60
-    export function setChannelOffset(channel: Channel, offset: number): void {
+    export function setChannelOffset(hubNo: Hub, channel: Channel, offset: number): void {
         return;
     }
 
     /**
-    *  MK6 Hub SendData
+    *  MK6Hub SendData
+    * @param hubNo hubNo, eg: "Hub A"
     */
     //% blockId=mk6hub_senddata 
-    //% block="MK6 Hub send data"
+    //% block="MK6Hub %hubNo send data"
     //% shim=mk6hub::sendData
     //% blockGap=8 weight=60
-    export function senddata(): void {
+    export function senddata(hubNo: Hub): void {
         return;
     }
 
     /**
-     * Stops advertising MK6 Hub
+     * Stops advertising MK6Hub
+     * @param hubNo hubNo, eg: "Hub A"
      */
     //% blockId=mk6hub_stop
-    //% block="MK6 Hub stop"
+    //% block="MK6Hub %hubNo stop"
     //% shim=mk6hub::stop
     //% weight=10 blockGap=8
-    export function stop(): void {
+    export function stop(hubNo: Hub): void {
         return;
     };
 
 
     /**
-    *  MK6 Hub get Version
+    *  MK6Hub get Version
+    * @param hubNo hubNo, eg: "Hub A"
     */
     //% blockId=mk6hub_getversion 
-    //% block="MK6 Hub get Version"
+    //% block="MK6Hub %hubNo get Version"
     //% shim=mk6hub::getVersion
     //% blockGap=8 weight=60 advanced=true
-    export function getversion(): number {
+    export function getversion(hubNo: Hub): number {
         return 0;
     }
 }
