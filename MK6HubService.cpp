@@ -186,7 +186,10 @@ void MK6HubService::setChannel(uint8_t channel, float value) {
 
     MICROBIT_DEBUG_DMESG("MK6HubService::setChannel");
 
-    if(value < 0) {
+    if(value == 0) {
+        channelValues[channel] = 0x80;
+    }
+    else if(value < 0) {
         channelValues[channel] = (uint8_t)fmax(value - channelOffsets[channel] + 0x80, 0);
     }
     else {
@@ -247,7 +250,10 @@ void MK6HubService::connect() {
 
 void MK6HubService::setChannel(uint8_t channel, float value) {
 
-    if(value < 0) {
+    if(value == 0) {
+        channelValues[channel] = 0x80;
+    }
+    else if(value < 0) {
         channelValues[channel] = (uint8_t)fmax(value - channelOffsets[channel] + 0x80, 0);
     }
     else {
