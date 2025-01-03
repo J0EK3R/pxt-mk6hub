@@ -27,7 +27,7 @@ namespace mk6hub {
 
 
     //%
-    void connect(uint8_t hubNo) {
+    void init(uint8_t hubNo) {
 
         createService();
 
