@@ -151,6 +151,10 @@ static void advertising_stop(void) {
 
 MK6HubService::MK6HubService(uint8_t hubNo) {
     m_hubNo = hubNo;
+
+    m_telegram_Data[0] = 0x61 + m_hubNo;
+    m_telegram_Data[9] = 0x9E - m_hubNo;
+
     ble_stack_init();
 }
 
