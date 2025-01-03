@@ -18,9 +18,9 @@ namespace mk6hub {
 
         if (NULL == _pService) {
 #if MICROBIT_CODAL
-            _pService = new MK6HubService();
+            _pService = new MK6HubService(0);
 #else
-            _pService = new MK6HubService(*uBit.ble);
+            _pService = new MK6HubService(0, *uBit.ble);
 #endif
         }
     }

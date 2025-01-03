@@ -17,7 +17,7 @@
 class MK6HubService
 {
     public:
-    MK6HubService();
+    MK6HubService(uint8_t hubNo);
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
@@ -27,6 +27,9 @@ class MK6HubService
     uint8_t getVersion();
 
   private:
+    // number of hub [0..2]
+    uint8_t m_hubNo;
+    
     float channelOffsets[6] = {
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
     uint8_t channelValues[6] = {
@@ -51,7 +54,7 @@ class MK6HubService
       * Create a representation of the BlueDotService
       * @param _ble The instance of a BLE device that we're running on.
       */
-    MK6HubService(BLEDevice &_ble);
+    MK6HubService(uint8_t hubNo, BLEDevice &_ble);
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
@@ -65,6 +68,9 @@ class MK6HubService
     // Bluetooth stack we're running on.
     BLEDevice &ble;
 
+    // number of hub [0..2]
+    uint8_t m_hubNo;
+    
     float channelOffsets[6] = {
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 

@@ -164,7 +164,8 @@ static void advertising_stop(void) {
 }
 
 
-MK6HubService::MK6HubService() {
+MK6HubService::MK6HubService(uint8_t hubNo) {
+    m_hubNo = hubNo;
     ble_stack_init();
 }
 
@@ -238,8 +239,9 @@ uint8_t MK6HubService::getVersion() {
  * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-MK6HubService::MK6HubService(BLEDevice &_ble) : ble(_ble) {
+MK6HubService::MK6HubService(uint8_t hubNo, BLEDevice &_ble) : ble(_ble) {
 
+    m_hubNo = hubNo;
 }
 
 
