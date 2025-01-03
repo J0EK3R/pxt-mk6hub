@@ -82,21 +82,6 @@ static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for st
 static uint8_t ctxValue            = 0x25; // CTXValue for Encryption
 static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
-static uint8_t telegram_Data[10]   = { 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E, };
-
-// static uint8_t m_rf_payload[31] = 
-// {
-//     0x02, // length: 0x2 (2)
-//     0x01, // type:   flags (0x01)
-//     0x06,
-
-//     0x1b, // length: 0x1b (27)
-//     0xff, // type:   manufacturer specific (0xff)
-//     0xf0, 0xff, // company Id: unkown 0xfff0
-//     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-//     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-//     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-//   };
 
 /**@brief Function for initializing the Advertising functionality.
  *
@@ -213,9 +198,9 @@ void MK6HubService::stop() {
 
 void MK6HubService::sendData() {
 
-    memcpy(&telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
+    memcpy(&m_telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
 
-    advertising_init(telegram_Data, 10, m_rf_payload);
+    advertising_init(m_telegram_Data, 10, m_rf_payload);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
