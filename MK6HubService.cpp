@@ -76,7 +76,6 @@
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
-static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
 static uint8_t ctxValue            = 0x25; // CTXValue for Encryption
@@ -88,9 +87,9 @@ static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80,
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(const uint8_t *data, const uint8_t dataLength, uint8_t *m_rf_payload)
+static void advertising_init(uint8_t *p_adv_handle, uint8_t *p_rf_payload, const uint8_t *p_data, const uint8_t dataLength)
 {
-    get_rf_payload(addressArray, 5, data, dataLength, ctxValue, m_rf_payload);
+    get_rf_payload(addressArray, 5, p_data, dataLength, ctxValue, p_rf_payload);
 
     ble_gap_adv_params_t gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -108,16 +107,16 @@ static void advertising_init(const uint8_t *data, const uint8_t dataLength, uint
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
 
-    gap_adv_data.adv_data.p_data    = m_rf_payload;
+    gap_adv_data.adv_data.p_data    = p_rf_payload;
     gap_adv_data.adv_data.len       = 31;
 
-    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
+    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(p_adv_handle, &gap_adv_data, &gap_adv_params));
 }
 
 
 /**@brief Function for starting advertising.
  */
-static void advertising_start(void)
+static void advertising_start(uint8_t m_adv_handle)
 {
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_start(m_adv_handle, APP_BLE_CONN_CFG_TAG));
 }
@@ -143,7 +142,7 @@ static void ble_stack_init(void)
 /**
  * @brief Function for stop advertising.
  */
-static void advertising_stop(void) {
+static void advertising_stop(uint8_t m_adv_handle) {
     MICROBIT_DEBUG_DMESG("stopAdvertising");
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
@@ -164,11 +163,11 @@ void MK6HubService::connect() {
     MICROBIT_DEBUG_DMESG("MK6HubService::connect");
     // uBit.display.print("start");
 
-    advertising_init(telegram_Connect, 8, m_rf_payload);
+    advertising_init(&m_adv_handle, m_rf_payload, telegram_Connect, 8);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
-    advertising_start();
+    advertising_start(m_adv_handle);
 }
 
 
@@ -196,7 +195,7 @@ void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
 
 void MK6HubService::stop() {
     // uBit.display.print("stop");
-    advertising_stop();
+    advertising_stop(m_adv_handle);
 }
 
 
@@ -204,17 +203,17 @@ void MK6HubService::sendData() {
 
     memcpy(&m_telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
 
-    advertising_init(m_telegram_Data, 10, m_rf_payload);
+    advertising_init(&m_adv_handle, m_rf_payload, m_telegram_Data, 10);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
-    advertising_start();
+    advertising_start(m_adv_handle);
 }
 
 
 uint8_t MK6HubService::getVersion() {
 
-    return 1;
+    return 2;
 }
 
 //================================================================
@@ -272,7 +271,7 @@ void MK6HubService::stop() {
 
 uint8_t MK6HubService::getVersion() {
 
-    return 2;
+    return 1;
 }
 
 //================================================================

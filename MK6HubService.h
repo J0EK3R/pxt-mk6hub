@@ -30,6 +30,8 @@ class MK6HubService
     // number of hub [0..2]
     uint8_t m_hubNo;
     
+    uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
+
     float channelOffsets[6] = {
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
     uint8_t channelValues[6] = {
