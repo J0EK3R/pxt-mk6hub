@@ -34,7 +34,7 @@ namespace mk6hub {
     * @param hubNo hubNo, eg: "Hub A"
     */
     //% blockId=mk6hub_init
-    //% block="MK6Hub %hubNo init"
+    //% block="MK6 %hubNo init"
     //% shim=mk6hub::init
     //% blockGap=8 weight=60
     export function init(hubNo: Hub): void {
@@ -48,7 +48,7 @@ namespace mk6hub {
     * @param value -127..127, eg: "value 0"
     */
     //% blockId=mk6hub_setchannel 
-    //% block="MK6Hub %hubNo set %channel to value %value"
+    //% block="MK6 %hubNo set %channel to value %value"
     //% shim=mk6hub::setChannel
     //% blockGap=8 weight=60
     export function setChannel(hubNo: Hub, channel: Channel, value: number): void {
@@ -62,7 +62,7 @@ namespace mk6hub {
     * @param offset -127..127, eg: "value 0"
     */
     //% blockId=mk6hub_setchanneloffset
-    //% block="MK6Hub %hubNo set %channel offset to value %offset"
+    //% block="MK6 %hubNo set %channel offset to value %offset"
     //% shim=mk6hub::setChannelOffset
     //% blockGap=8 weight=60
     export function setChannelOffset(hubNo: Hub, channel: Channel, offset: number): void {
@@ -74,7 +74,7 @@ namespace mk6hub {
     * @param hubNo hubNo, eg: "Hub A"
     */
     //% blockId=mk6hub_senddata 
-    //% block="MK6Hub %hubNo send data"
+    //% block="MK6 %hubNo send data"
     //% shim=mk6hub::sendData
     //% blockGap=8 weight=60
     export function senddata(hubNo: Hub): void {
@@ -86,7 +86,7 @@ namespace mk6hub {
      * @param hubNo hubNo, eg: "Hub A"
      */
     //% blockId=mk6hub_stop
-    //% block="MK6Hub %hubNo stop"
+    //% block="MK6 %hubNo stop"
     //% shim=mk6hub::stop
     //% weight=10 blockGap=8
     export function stop(hubNo: Hub): void {
@@ -99,7 +99,7 @@ namespace mk6hub {
     * @param hubNo hubNo, eg: "Hub A"
     */
     //% blockId=mk6hub_getversion 
-    //% block="MK6Hub %hubNo get Version"
+    //% block="MK6 %hubNo get Version"
     //% shim=mk6hub::getVersion
     //% blockGap=8 weight=60 advanced=true
     export function getversion(hubNo: Hub): number {
