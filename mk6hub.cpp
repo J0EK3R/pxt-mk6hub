@@ -27,7 +27,7 @@ namespace mk6hub {
 
 
     //%
-    void connect() {
+    void connect(uint8_t hubNo) {
 
         createService();
 
@@ -36,7 +36,7 @@ namespace mk6hub {
 
 
     //% 
-    void setChannel(uint8_t channel, float value) {        
+    void setChannel(uint8_t hubNo, uint8_t channel, float value) {        
 
         createService();
 
@@ -45,7 +45,7 @@ namespace mk6hub {
 
 
     //% 
-    void setChannelOffset(uint8_t channel, float value) {        
+    void setChannelOffset(uint8_t hubNo, uint8_t channel, float value) {        
 
         createService();
 
@@ -54,7 +54,7 @@ namespace mk6hub {
 
 
     //% 
-    void sendData() {        
+    void sendData(uint8_t hubNo) {        
 
         createService();
 
@@ -63,7 +63,7 @@ namespace mk6hub {
 
 
     //% 
-    void stop() {        
+    void stop(uint8_t hubNo) {        
 
         if (NULL != _pService) {
             _pService->stop();
@@ -74,7 +74,7 @@ namespace mk6hub {
 
 
     //% 
-    uint8_t getVersion() {        
+    uint8_t getVersion(uint8_t hubNo) {        
 
         createService();
 
