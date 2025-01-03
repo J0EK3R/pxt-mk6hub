@@ -12,72 +12,81 @@ using namespace pxt;
 //% color=#00c300 weight=100 icon="\uf294" block="MK6 Hub"
 namespace mk6hub {
 
-    MK6HubService* _pService = NULL;
+    MK6HubService* _pService[3] = {
+        NULL,
+        NULL,
+        NULL
+    };
 
-    void createService() {
+    MK6HubService* getService(uint8_t hubNo) {
 
-        if (NULL == _pService) {
+        MK6HubService *pService = _pService[hubNo];
+
+        if (NULL == pService)
+        {
 #if MICROBIT_CODAL
-            _pService = new MK6HubService(0);
+            pService = new MK6HubService(hubNo);
 #else
-            _pService = new MK6HubService(0, *uBit.ble);
+            pService = new MK6HubService(hubNo, *uBit.ble);
 #endif
+            _pService[hubNo] = pService;
         }
-    }
 
+        return pService;
+    }
 
     //%
     void init(uint8_t hubNo) {
 
-        createService();
+        MK6HubService *pService = getService(hubNo);
 
-        _pService->connect();
+        pService->connect();
     }
 
 
     //% 
     void setChannel(uint8_t hubNo, uint8_t channel, float value) {        
 
-        createService();
+        MK6HubService *pService = getService(hubNo);
 
-        _pService->setChannel(channel, value);
+        pService->setChannel(channel, value);
     }   
 
 
     //% 
     void setChannelOffset(uint8_t hubNo, uint8_t channel, float value) {        
 
-        createService();
+        MK6HubService *pService = getService(hubNo);
 
-        _pService->setChannelOffset(channel, value);
+        pService->setChannelOffset(channel, value);
     }   
 
 
     //% 
     void sendData(uint8_t hubNo) {        
 
-        createService();
+        MK6HubService *pService = getService(hubNo);
 
-        _pService->sendData();
+        pService->sendData();
     }   
 
 
     //% 
     void stop(uint8_t hubNo) {        
 
-        if (NULL != _pService) {
-            _pService->stop();
-        }        
+        MK6HubService *pService = getService(hubNo);
 
-        // uBit.bleManager.stopAdvertising();  
+        if (NULL != pService) {
+            pService->stop();
+        }        
     }   
 
 
     //% 
     uint8_t getVersion(uint8_t hubNo) {        
 
-        createService();
+        MK6HubService *pService = getService(hubNo);
 
-        return _pService->getVersion();
+        return pService->getVersion();
     }   
 }
