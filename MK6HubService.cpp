@@ -84,26 +84,26 @@ static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
 static uint8_t telegram_Data[10]   = { 0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E, };
 
-static uint8_t m_rf_payload[31] = 
-{
-    0x02, // length: 0x2 (2)
-    0x01, // type:   flags (0x01)
-    0x06,
+// static uint8_t m_rf_payload[31] = 
+// {
+//     0x02, // length: 0x2 (2)
+//     0x01, // type:   flags (0x01)
+//     0x06,
 
-    0x1b, // length: 0x1b (27)
-    0xff, // type:   manufacturer specific (0xff)
-    0xf0, 0xff, // company Id: unkown 0xfff0
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-  };
+//     0x1b, // length: 0x1b (27)
+//     0xff, // type:   manufacturer specific (0xff)
+//     0xf0, 0xff, // company Id: unkown 0xfff0
+//     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+//     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+//     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+//   };
 
 /**@brief Function for initializing the Advertising functionality.
  *
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(const uint8_t *data, const uint8_t dataLength)
+static void advertising_init(const uint8_t *data, const uint8_t dataLength, uint8_t *m_rf_payload)
 {
     get_rf_payload(addressArray, 5, data, dataLength, ctxValue, m_rf_payload);
 
@@ -175,7 +175,7 @@ void MK6HubService::connect() {
     MICROBIT_DEBUG_DMESG("MK6HubService::connect");
     // uBit.display.print("start");
 
-    advertising_init(telegram_Connect, 8);
+    advertising_init(telegram_Connect, 8, m_rf_payload);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
@@ -215,7 +215,7 @@ void MK6HubService::sendData() {
 
     memcpy(&telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
 
-    advertising_init(telegram_Data, 10);
+    advertising_init(telegram_Data, 10, m_rf_payload);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");

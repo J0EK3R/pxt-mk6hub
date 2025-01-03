@@ -18,7 +18,7 @@
         "label": "pxt build",
         "type": "shell",
         "command": "pxt build",
-        "group": "test",
+        "group": "build",
         "problemMatcher": [ "$tsc" ]
     }, {
         "label": "pxt clean",
