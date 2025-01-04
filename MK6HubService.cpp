@@ -168,7 +168,7 @@ void MK6HubService::connect() {
     MICROBIT_DEBUG_DMESG("MK6HubService::connect");
     // uBit.display.print("start");
 
-    advertising_init(&m_adv_handle1, m_rf_payload, telegram_Connect, 8);
+    advertising_init(&m_adv_handle1, m_rf_payload1, telegram_Connect, 8);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
@@ -209,7 +209,7 @@ void MK6HubService::sendData() {
 
     memcpy(&m_telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
 
-    advertising_init(&m_adv_handle2, m_rf_payload, m_telegram_Data, 10);
+    advertising_init(&m_adv_handle2, m_rf_payload2, m_telegram_Data, 10);
 
     // Start execution.
     // NRF_LOG_INFO("Beacon example started.");
