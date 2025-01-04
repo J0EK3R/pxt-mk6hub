@@ -1,6 +1,4 @@
-#include "MicroBitConfig.h"
-#include "MK6HubService.h"
-#include "CryptTool.h"
+#include "BTAdvManager.h"
 
 //================================================================
 #if MICROBIT_CODAL
@@ -77,9 +75,6 @@
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
 static bool bleStackInit = false;
-static uint8_t ctxValue = 0x25; // CTXValue for Encryption
-static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
-static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
 
 /**@brief Function for initializing the Advertising functionality.
  *
@@ -88,8 +83,6 @@ static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80,
  */
 static void advertising_init(uint8_t *p_adv_handle, uint8_t *p_rf_payload, const uint8_t *p_data, const uint8_t dataLength)
 {
-    get_rf_payload(addressArray, 5, p_data, dataLength, ctxValue, p_rf_payload);
-
     ble_gap_adv_params_t gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
 
@@ -151,74 +144,11 @@ static void advertising_stop(uint8_t m_adv_handle) {
 }
 
 
-MK6HubService::MK6HubService(uint8_t hubNo) {
-    m_hubNo = hubNo;
-
-    m_telegram_Data[0] = 0x61 + m_hubNo;
-    m_telegram_Data[9] = 0x9E - m_hubNo;
+BTAdvManager::BTAdvManager() {
 
     ble_stack_init();
 }
 
-
-void MK6HubService::connect() {
-
-    MICROBIT_DEBUG_DMESG("MK6HubService::connect");
-    // uBit.display.print("start");
-
-    advertising_init(&m_adv_handle, m_rf_payload, telegram_Connect, 8);
-
-    // Start execution.
-    // NRF_LOG_INFO("Beacon example started.");
-    advertising_start(m_adv_handle);
-}
-
-
-void MK6HubService::setChannel(uint8_t channel, float value) {
-
-    MICROBIT_DEBUG_DMESG("MK6HubService::setChannel");
-
-    if(value == 0) {
-        channelValues[channel] = 0x80;
-    }
-    else if(value < 0) {
-        channelValues[channel] = (uint8_t)fmax(value - channelOffsets[channel] + 0x80, 0);
-    }
-    else {
-        channelValues[channel] = (uint8_t)fmin(value + channelOffsets[channel] + 0x80, 0xFF);
-    }
-}
-
-
-void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
-
-    channelOffsets[channel] = offset;
-}
-
-
-void MK6HubService::stop() {
-    // uBit.display.print("stop");
-    advertising_stop(m_adv_handle);
-    advertising_stop(m_adv_handle);
-}
-
-
-void MK6HubService::sendData() {
-
-    memcpy(&m_telegram_Data[3], channelValues, sizeof(uint8_t) * 6);
-
-    advertising_init(&m_adv_handle, m_rf_payload, m_telegram_Data, 10);
-
-    // Start execution.
-    // NRF_LOG_INFO("Beacon example started.");
-    advertising_start(m_adv_handle);
-}
-
-
-uint8_t MK6HubService::getVersion() {
-
-    return 2;
-}
 
 //================================================================
 #else // MICROBIT_CODAL
@@ -231,51 +161,8 @@ uint8_t MK6HubService::getVersion() {
  * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-MK6HubService::MK6HubService(uint8_t hubNo, BLEDevice &_ble) : ble(_ble) {
+BTAdvManager::BTAdvManager(BLEDevice &_ble) : ble(_ble) {
 
-    m_hubNo = hubNo;
-}
-
-
-void MK6HubService::connect() {
-
-}
-
-
-void MK6HubService::setChannel(uint8_t channel, float value) {
-
-    if(value == 0) {
-        channelValues[channel] = 0x80;
-    }
-    else if(value < 0) {
-        channelValues[channel] = (uint8_t)fmax(value - channelOffsets[channel] + 0x80, 0);
-    }
-    else {
-        channelValues[channel] = (uint8_t)fmin(value + channelOffsets[channel] + 0x80, 0xFF);
-    }
-}
-
-
-void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
-
-    channelOffsets[channel] = offset;
-}
-
-
-void MK6HubService::sendData() {
-
-}
-
-
-void MK6HubService::stop() {
-    // ble.gap().stopAdvertising();
-    uBit.bleManager.stopAdvertising();
-}
-
-
-uint8_t MK6HubService::getVersion() {
-
-    return 1;
 }
 
 //================================================================
