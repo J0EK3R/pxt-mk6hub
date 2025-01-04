@@ -78,7 +78,8 @@
 
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
-static uint8_t ctxValue            = 0x25; // CTXValue for Encryption
+static bool ble_stack_init = false;
+static uint8_t ctxValue = 0x25; // CTXValue for Encryption
 static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
 
@@ -128,15 +129,19 @@ static void advertising_start(uint8_t m_adv_handle)
  */
 static void ble_stack_init(void)
 {
-    MICROBIT_BLE_ECHK(nrf_sdh_enable_request());
+    if(!ble_stack_init) { // prevent multiple init
+    
+        MICROBIT_BLE_ECHK(nrf_sdh_enable_request());
 
-    // Configure the BLE stack using the default settings.
-    // Fetch the start address of the application RAM.
-    uint32_t ram_start = 0;
-    MICROBIT_BLE_ECHK(nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start));
+        // Configure the BLE stack using the default settings.
+        // Fetch the start address of the application RAM.
+        uint32_t ram_start = 0;
+        MICROBIT_BLE_ECHK(nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start));
 
-    // Enable BLE stack.
-    MICROBIT_BLE_ECHK(nrf_sdh_ble_enable(&ram_start));
+        // Enable BLE stack.
+        MICROBIT_BLE_ECHK(nrf_sdh_ble_enable(&ram_start));
+        ble_stack_init = true;
+    }
 }
 
 /**
