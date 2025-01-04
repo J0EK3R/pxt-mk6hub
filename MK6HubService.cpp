@@ -200,7 +200,8 @@ void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
 
 void MK6HubService::stop() {
     // uBit.display.print("stop");
-    advertising_stop(m_adv_handle);
+    advertising_stop(m_adv_handle1);
+    advertising_stop(m_adv_handle2);
 }
 
 
