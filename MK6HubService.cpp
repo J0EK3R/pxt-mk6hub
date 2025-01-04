@@ -218,7 +218,7 @@ void MK6HubService::sendData() {
 
 uint8_t MK6HubService::getVersion() {
 
-    return 2;
+    return m_adv_handle;
 }
 
 //================================================================
