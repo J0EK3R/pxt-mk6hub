@@ -78,7 +78,7 @@
 
 static uint8_t m_enc_advdata[BLE_GAP_ADV_SET_DATA_SIZE_MAX];  /**< Buffer for storing an encoded advertising set. */
 
-static bool ble_stack_init = false;
+static bool bleStackInit = false;
 static uint8_t ctxValue = 0x25; // CTXValue for Encryption
 static uint8_t addressArray[5]     = { 0xC1, 0xC2, 0xC3, 0xC4, 0xC5 };
 static uint8_t telegram_Connect[8] = { 0x6D, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x92, };
@@ -129,8 +129,8 @@ static void advertising_start(uint8_t m_adv_handle)
  */
 static void ble_stack_init(void)
 {
-    if(!ble_stack_init) { // prevent multiple init
-    
+    if (!bleStackInit) { // prevent multiple init
+
         MICROBIT_BLE_ECHK(nrf_sdh_enable_request());
 
         // Configure the BLE stack using the default settings.
@@ -140,7 +140,7 @@ static void ble_stack_init(void)
 
         // Enable BLE stack.
         MICROBIT_BLE_ECHK(nrf_sdh_ble_enable(&ram_start));
-        ble_stack_init = true;
+        bleStackInit = true;
     }
 }
 
