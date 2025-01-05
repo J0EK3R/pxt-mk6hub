@@ -3,6 +3,7 @@
 
 #include "MicroBitConfig.h"
 #include "pxt.h"
+#include "BLEAdvManager.h"
 
 //================================================================
 #if MICROBIT_CODAL
@@ -17,7 +18,14 @@
 class MK6HubService
 {
     public:
-    MK6HubService(uint8_t hubNo);
+    /**
+      * Constructor.
+      * Create a representation of the MK6HubService
+      * @param _BLEAdvManager The instance of a BLEAdvManager that we're running on.
+      * @param hubNo Number of the MK6 hub.
+      */
+    MK6HubService(BLEAdvManager &_BLEAdvManager, uint8_t hubNo);
+
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
@@ -27,6 +35,8 @@ class MK6HubService
     uint8_t getVersion();
 
   private:
+    BLEAdvManager &bleAdvManager;
+
     // number of hub [0..2]
     uint8_t m_hubNo;
     
@@ -70,10 +80,12 @@ class MK6HubService
 
     /**
       * Constructor.
-      * Create a representation of the BlueDotService
-      * @param _ble The instance of a BLE device that we're running on.
+      * Create a representation of the MK6HubService
+      * @param _BLEAdvManager The instance of a BLEAdvManager that we're running on.
+      * @param hubNo Number of the MK6 hub.
       */
-    MK6HubService(uint8_t hubNo, BLEDevice &_ble);
+    MK6HubService(BLEAdvManager &_BLEAdvManager, uint8_t hubNo);
+
     void connect();
     void stop();
     void setChannel(uint8_t channel, float value);
@@ -84,8 +96,7 @@ class MK6HubService
 
     private:
 
-    // Bluetooth stack we're running on.
-    BLEDevice &ble;
+    BLEAdvManager &bleAdvManager;
 
     // number of hub [0..2]
     uint8_t m_hubNo;

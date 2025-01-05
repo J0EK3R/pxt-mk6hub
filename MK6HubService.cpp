@@ -151,8 +151,7 @@ static void advertising_stop(uint8_t m_adv_handle) {
 }
 
 
-MK6HubService::MK6HubService(uint8_t hubNo) {
-    m_hubNo = hubNo;
+MK6HubService::MK6HubService(BLEAdvManager &_BLEAdvManager, uint8_t hubNo) : bleAdvManager(_BLEAdvManager), m_hubNo(hubNo) {
 
     m_telegram_Data[0] = 0x61 + m_hubNo;
     m_telegram_Data[9] = 0x9E - m_hubNo;
@@ -231,7 +230,7 @@ uint8_t MK6HubService::getVersion() {
  * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-MK6HubService::MK6HubService(uint8_t hubNo, BLEDevice &_ble) : ble(_ble) {
+MK6HubService::MK6HubService(BLEAdvManager &_BLEAdvManager, uint8_t hubNo) : bleAdvManager(_BLEAdvManager), m_hubNo(hubNo) {
 
     m_hubNo = hubNo;
 }

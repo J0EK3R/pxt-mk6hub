@@ -1,8 +1,9 @@
 #include "pxt.h"
-#include "MK6HubService.h"
 #include <stdio.h>
 #include <ctype.h>
 #include "MicroBitConfig.h"
+#include "MK6HubService.h"
+#include "BLEAdvManager.h"
 
 using namespace pxt;
 
@@ -11,6 +12,7 @@ using namespace pxt;
  */
 //% color=#00c300 weight=100 icon="\uf294" block="MK6 Hub"
 namespace mk6hub {
+    BLEAdvManager* _pBLEAdvManager = NULL;
 
     MK6HubService* _pService[3] = {
         NULL,
@@ -20,14 +22,23 @@ namespace mk6hub {
 
     MK6HubService* getService(uint8_t hubNo) {
 
+        if (NULL == _pBLEAdvManager)
+        {
+#if MICROBIT_CODAL
+            _pBLEAdvManager = new BLEAdvManager();
+#else
+            _pBLEAdvManager = new BLEAdvManager(*uBit.ble);
+#endif
+        }
+
         MK6HubService *pService = _pService[hubNo];
 
         if (NULL == pService)
         {
 #if MICROBIT_CODAL
-            pService = new MK6HubService(hubNo);
+            pService = new MK6HubService(*_pBLEAdvManager, hubNo);
 #else
-            pService = new MK6HubService(hubNo, *uBit.ble);
+            pService = new MK6HubService(*_pBLEAdvManager, hubNo);
 #endif
             _pService[hubNo] = pService;
         }
