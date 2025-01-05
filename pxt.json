@@ -14,8 +14,8 @@
         "mk6hub.cpp",
         "MK6HubService.cpp",
         "MK6HubService.h",
-        "BTAdvManager.cpp",
-        "BTAdvManager.h",
+        "BLEAdvManager.cpp",
+        "BLEAdvManager.h",
         "CryptTool.cpp",
         "CryptTool.h"
     ],

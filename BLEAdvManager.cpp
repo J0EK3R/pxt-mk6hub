@@ -1,4 +1,4 @@
-#include "BTAdvManager.h"
+#include "BLEAdvManager.h"
 
 //================================================================
 #if MICROBIT_CODAL
@@ -144,7 +144,7 @@ static void advertising_stop(uint8_t m_adv_handle) {
 }
 
 
-BTAdvManager::BTAdvManager() {
+BLEAdvManager::BLEAdvManager() {
 
     ble_stack_init();
 }
@@ -161,7 +161,7 @@ BTAdvManager::BTAdvManager() {
  * Create a representation of the MK6HubService
  * @param _ble The instance of a BLE device that we're running on.
  */
-BTAdvManager::BTAdvManager(BLEDevice &_ble) : ble(_ble) {
+BLEAdvManager::BLEAdvManager(BLEDevice &_ble) : ble(_ble) {
 
 }
 

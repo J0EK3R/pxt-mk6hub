@@ -1,5 +1,5 @@
-#ifndef BTADVMANAGER_H
-#define BTADVMANAGER_H
+#ifndef BLEADVMANAGER_H
+#define BLEADVMANAGER_H
 
 #include "MicroBitConfig.h"
 #include "pxt.h"
@@ -14,10 +14,10 @@
 // https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/MicroBitBLEService.h
 // #include "MicroBitBLEService.h" 
 
-class BTAdvManager
+class BLEAdvManager
 {
     public:
-    BTAdvManager();
+    BLEAdvManager();
 
   private:
     uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
@@ -32,7 +32,7 @@ class BTAdvManager
 /**
   * Class definition for the MK6HubService service.
   */
-class BTAdvManager
+class BLEAdvManager
 {
     public:
 
@@ -41,7 +41,7 @@ class BTAdvManager
       * Create a representation of the BlueDotService
       * @param _ble The instance of a BLE device that we're running on.
       */
-    BTAdvManager(BLEDevice &_ble);
+    BLEAdvManager(BLEDevice &_ble);
 
     private:
 
