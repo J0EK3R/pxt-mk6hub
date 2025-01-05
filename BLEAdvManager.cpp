@@ -74,15 +74,17 @@
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
-static bool bleStackInit = false;
+static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
+
+static bool m_bleStackInit = false;
 
 /**@brief Function for initializing the Advertising functionality.
  *
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(uint8_t *p_adv_handle, uint8_t *p_rf_payload, const uint8_t *p_data, const uint8_t dataLength)
-{
+static void advertising_init(uint8_t *pPayload) {
+
     ble_gap_adv_params_t gap_adv_params;
     memset(&gap_adv_params, 0, sizeof(gap_adv_params));
 
@@ -99,17 +101,17 @@ static void advertising_init(uint8_t *p_adv_handle, uint8_t *p_rf_payload, const
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
 
-    gap_adv_data.adv_data.p_data    = p_rf_payload;
+    gap_adv_data.adv_data.p_data    = pPayload;
     gap_adv_data.adv_data.len       = 31;
 
-    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(p_adv_handle, &gap_adv_data, &gap_adv_params));
+    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
 }
 
 
 /**@brief Function for starting advertising.
  */
-static void advertising_start(uint8_t m_adv_handle)
-{
+static void advertising_start(void) {
+
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_start(m_adv_handle, APP_BLE_CONN_CFG_TAG));
 }
 
@@ -120,7 +122,7 @@ static void advertising_start(uint8_t m_adv_handle)
  */
 static void ble_stack_init(void)
 {
-    if (!bleStackInit) { // prevent multiple init
+    if (!m_bleStackInit) { // prevent multiple init
 
         MICROBIT_BLE_ECHK(nrf_sdh_enable_request());
 
@@ -131,15 +133,17 @@ static void ble_stack_init(void)
 
         // Enable BLE stack.
         MICROBIT_BLE_ECHK(nrf_sdh_ble_enable(&ram_start));
-        bleStackInit = true;
+        m_bleStackInit = true;
     }
 }
 
 /**
  * @brief Function for stop advertising.
  */
-static void advertising_stop(uint8_t m_adv_handle) {
+static void advertising_stop(void) {
+
     MICROBIT_DEBUG_DMESG("stopAdvertising");
+
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
 }
 
@@ -148,6 +152,33 @@ BLEAdvManager::BLEAdvManager() {
 
     ble_stack_init();
 }
+
+uint8_t BLEAdvManager::register_client() {
+
+    return 0;
+}
+
+void BLEAdvManager::unregister_client(uint8_t handle) {
+
+}
+
+
+void BLEAdvManager::advertise(uint8_t handle, uint8_t *payload) {
+
+    advertising_init(payload);
+
+    // Start execution.
+    // NRF_LOG_INFO("Beacon example started.");
+    advertising_start();
+
+}
+
+
+void BLEAdvManager::stop(uint8_t handle) {
+
+    advertising_stop();
+}
+
 
 
 //================================================================
@@ -162,6 +193,25 @@ BLEAdvManager::BLEAdvManager() {
  * @param _ble The instance of a BLE device that we're running on.
  */
 BLEAdvManager::BLEAdvManager(BLEDevice &_ble) : ble(_ble) {
+
+}
+
+uint8_t BLEAdvManager::register_client() {
+
+    return 0;
+}
+
+void BLEAdvManager::unregister_client(uint8_t handle) {
+
+}
+
+
+void BLEAdvManager::advertise(uint8_t handle, uint8_t *payload) {
+
+}
+
+
+void BLEAdvManager::stop(uint8_t handle) {
 
 }
 

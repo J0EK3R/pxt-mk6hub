@@ -17,10 +17,17 @@
 class BLEAdvManager
 {
     public:
-    BLEAdvManager();
 
-  private:
-    uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
+      BLEAdvManager();
+
+      uint8_t register_client();
+      void unregister_client(uint8_t handle);
+
+      void advertise(uint8_t handle, uint8_t *payload);
+      void stop(uint8_t handle);
+
+    private:
+
 };
 
 //================================================================
@@ -36,17 +43,23 @@ class BLEAdvManager
 {
     public:
 
-    /**
-      * Constructor.
-      * Create a representation of the BlueDotService
-      * @param _ble The instance of a BLE device that we're running on.
-      */
-    BLEAdvManager(BLEDevice &_ble);
+      /**
+        * Constructor.
+        * Create a representation of the BlueDotService
+        * @param _ble The instance of a BLE device that we're running on.
+        */
+      BLEAdvManager(BLEDevice &_ble);
+
+      uint8_t register_client();
+      void unregister_client(uint8_t handle);
+
+      void advertise(uint8_t handle, uint8_t *payload);
+      void stop(uint8_t handle);
 
     private:
 
-    // Bluetooth stack we're running on.
-    BLEDevice &ble;
+      // Bluetooth stack we're running on.
+      BLEDevice &ble;
 };
 
 //================================================================

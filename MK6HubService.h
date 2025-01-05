@@ -5,16 +5,6 @@
 #include "pxt.h"
 #include "BLEAdvManager.h"
 
-//================================================================
-#if MICROBIT_CODAL
-//================================================================
-
-// https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/bluetooth/MicroBitBLEManager.h
-// https://github.com/lancaster-university/codal-microbit-v2/blob/master/source/bluetooth/MicroBitBLEManager.cpp
-#include "MicroBitBLEManager.h" 
-// https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/MicroBitBLEService.h
-// #include "MicroBitBLEService.h" 
-
 class MK6HubService
 {
     public:
@@ -28,6 +18,7 @@ class MK6HubService
 
     void connect();
     void stop();
+
     void setChannel(uint8_t channel, float value);
     void setChannelOffset(uint8_t channel, float offset);
     void sendData();
@@ -35,20 +26,23 @@ class MK6HubService
     uint8_t getVersion();
 
   private:
-    BLEAdvManager &bleAdvManager;
+
+    // advertising manager
+    BLEAdvManager &m_bleAdvManager;
 
     // number of hub [0..2]
     uint8_t m_hubNo;
     
-    uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
-
-    float channelOffsets[6] = {
+    // handle from bleAdvManager returned on registration
+    uint8_t m_bleAdvManager_handle;
+    
+    float m_channelOffsets[6] = {
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    uint8_t channelValues[6] = {
+    uint8_t m_channelValues[6] = {
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
 
-    uint8_t m_rf_payload[31] = {
+    uint8_t m_pPayload[31] = {
         0x02, // length: 0x2 (2)
         0x01, // type:   flags (0x01)
         0x06,
@@ -64,52 +58,5 @@ class MK6HubService
       uint8_t m_telegram_Data[10] = { 
         0x61, 0x7B, 0xA7, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x9E };
 };
-
-//================================================================
-#else // MICROBIT_CODAL
-//================================================================
-
-#include "ble/BLE.h"
-
-/**
-  * Class definition for the MK6HubService service.
-  */
-class MK6HubService
-{
-    public:
-
-    /**
-      * Constructor.
-      * Create a representation of the MK6HubService
-      * @param _BLEAdvManager The instance of a BLEAdvManager that we're running on.
-      * @param hubNo Number of the MK6 hub.
-      */
-    MK6HubService(BLEAdvManager &_BLEAdvManager, uint8_t hubNo);
-
-    void connect();
-    void stop();
-    void setChannel(uint8_t channel, float value);
-    void setChannelOffset(uint8_t channel, float offset);
-    void sendData();
-
-    uint8_t getVersion();
-
-    private:
-
-    BLEAdvManager &bleAdvManager;
-
-    // number of hub [0..2]
-    uint8_t m_hubNo;
-    
-    float channelOffsets[6] = {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-
-    uint8_t channelValues[6] = {
-        0x80, 0x80, 0x80, 0x80, 0x80, 0x80 };
-};
-
-//================================================================
-#endif // MICROBIT_CODAL
-//================================================================
 
 #endif
