@@ -58,9 +58,8 @@ namespace mk6hub {
 
         BLEAdvManager *pBLEAdvManager = getBLEAdvManager();
 
-        pBLEAdvManager->loop():
+        pBLEAdvManager->loop();
     }
-
 
     //%
     void init(uint8_t hubNo) {
