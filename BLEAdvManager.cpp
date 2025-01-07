@@ -219,7 +219,7 @@ void BLEAdvManager::loop() {
 
         m_currentClient++;
 
-        if(m_currentClient >= 10)
+        if (m_currentClient >= 10)
         {
             m_currentClient = 0;
         }
@@ -228,7 +228,7 @@ void BLEAdvManager::loop() {
 
             if (m_dropLoop[m_currentClient] != 0x00) {
 
-                m_dropLoop[m_currentClient] == 0x00;
+                m_dropLoop[m_currentClient] = 0x00;
             }
             else {
 
