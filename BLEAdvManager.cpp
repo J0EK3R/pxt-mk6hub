@@ -124,7 +124,7 @@ static void advertising_init(uint8_t *p_payload) {
     }
     else {
 
-        MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, null));
+        MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, NULL));
     }
 }
 
