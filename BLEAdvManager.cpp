@@ -53,6 +53,8 @@
  * This file contains the source code for an Beacon transmitter sample application.
  */
 
+// https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/modules.html#
+
 #include <stdbool.h>
 #include <stdint.h>
 #include "nordic_common.h"
@@ -83,28 +85,48 @@ static bool m_bleStackInit = false;
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(uint8_t *pPayload) {
+static void advertising_init(uint8_t *p_Payload) {
 
-    ble_gap_adv_params_t gap_adv_params;
-    memset(&gap_adv_params, 0, sizeof(gap_adv_params));
+    ble_gap_adv_params_t *p_gap_adv_params = NULL;
 
-    // gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; //BLE_GAP_ADV_TYPE_EXTENDED_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; // BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED;
-    gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_CONNECTABLE_SCANNABLE_UNDIRECTED;
-    gap_adv_params.p_peer_addr      = NULL;    // Undirected advertisement.
-    gap_adv_params.filter_policy    = BLE_GAP_ADV_FP_ANY;
-    gap_adv_params.interval         = NON_CONNECTABLE_ADV_INTERVAL;
-    gap_adv_params.duration         = 0;       // Never time out.
+    if (m_adv_handle == BLE_GAP_ADV_SET_HANDLE_NOT_SET) {
 
-    gap_adv_params.primary_phy      = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
-    gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+        ble_gap_adv_params_t gap_adv_params;
+        memset(&gap_adv_params, 0, sizeof(gap_adv_params));
+
+        // gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; //BLE_GAP_ADV_TYPE_EXTENDED_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; // BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED;
+        gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_CONNECTABLE_SCANNABLE_UNDIRECTED;
+        gap_adv_params.p_peer_addr      = NULL;    // Undirected advertisement.
+        gap_adv_params.filter_policy    = BLE_GAP_ADV_FP_ANY;
+        gap_adv_params.interval         = NON_CONNECTABLE_ADV_INTERVAL;
+        gap_adv_params.duration         = 0;       // Never time out.
+
+        gap_adv_params.primary_phy      = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+        gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+
+        p_gap_adv_params = &gap_adv_params
+    }
 
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
 
-    gap_adv_data.adv_data.p_data    = pPayload;
+    gap_adv_data.adv_data.p_data    = p_Payload;
     gap_adv_data.adv_data.len       = 31;
 
-    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
+    // https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/group_b_l_e_g_a_p_f_u_n_c_t_i_o_n_s_4.html#ga9969047f4e7485c3f856c841978cc31a
+    // Configure an advertising set. Set, clear or update advertising and scan response data.
+    // Note
+    //     The format of the advertising data will be checked by this call to ensure interoperability. 
+    //     Limitations imposed by this API call to the data provided include having a flags data type in the 
+    //     scan response data and duplicating the local name in the advertising data and scan response data.
+    //     In order to update advertising data while advertising, new advertising buffers must be provided.
+    //  [in,out]    p_adv_handle	Provide a pointer to a handle containing BLE_GAP_ADV_SET_HANDLE_NOT_SET to configure a new advertising set. 
+    //                              On success, a new handle is then returned through the pointer. Provide a pointer to an existing advertising 
+    //                              handle to configure an existing advertising set.
+    //  [in]	    p_adv_data	    Advertising data. If set to NULL, no advertising data will be used. See ble_gap_adv_data_t.
+    //  [in]	    p_adv_params	Advertising parameters. When this function is used to update advertising data while advertising, 
+    //                              this parameter must be NULL. See ble_gap_adv_params_t.
+    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, p_gap_adv_params));
 }
 
 
@@ -112,6 +134,14 @@ static void advertising_init(uint8_t *pPayload) {
  */
 static void advertising_start(void) {
 
+    // https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/group_b_l_e_g_a_p_f_u_n_c_t_i_o_n_s_4.html#ga74c21287bd6cbcd5822bc73792f678d8
+    // Start advertising (GAP Discoverable, Connectable modes, Broadcast Procedure). 
+    // Note
+    //     Only one advertiser may be active at any time.
+    //     If privacy is enabled, the advertiser's private address will be refreshed when this function is called. See sd_ble_gap_privacy_set().
+    // [in]	        adv_handle	    Advertising handle to advertise on, received from sd_ble_gap_adv_set_configure.
+    // [in]	        conn_cfg_tag	Tag identifying a configuration set by sd_ble_cfg_set or BLE_CONN_CFG_TAG_DEFAULT to use the default connection configuration. 
+    //                              For non-connectable advertising, this is ignored.    
     MICROBIT_BLE_ECHK(sd_ble_gap_adv_start(m_adv_handle, APP_BLE_CONN_CFG_TAG));
 }
 
@@ -163,14 +193,11 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 }
 
 
-void BLEAdvManager::advertise(uint8_t handle, uint8_t *payload) {
+void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_Payload) {
 
-    advertising_init(payload);
+    advertising_init(p_Payload);
 
-    // Start execution.
-    // NRF_LOG_INFO("Beacon example started.");
     advertising_start();
-
 }
 
 
@@ -206,7 +233,7 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 }
 
 
-void BLEAdvManager::advertise(uint8_t handle, uint8_t *payload) {
+void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_Payload) {
 
 }
 
