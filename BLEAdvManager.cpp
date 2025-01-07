@@ -215,8 +215,8 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 
 void BLEAdvManager::loop() {
 
-    for (int index = 0; index < 10; index++)
-    {
+    for (int index = 0; index < 10; index++) {
+
         m_currentClient++;
 
         if(m_currentClient >= 10)
@@ -283,6 +283,9 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 
 }
 
+void BLEAdvManager::loop() {
+
+}
 
 void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
