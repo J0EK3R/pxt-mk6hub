@@ -237,14 +237,13 @@ void BLEAdvManager::loop() {
 
 void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
-    bool isStarted = NULL != m_payloads[handle];
+    bool isNew = NULL == m_payloads[handle];
 
     m_payloads[handle] = p_payload;
 
-    advertising_init(p_payload);
+    if (isNew) {
 
-    if (!isStarted) {
-
+        loop();
         advertising_start();
     }
 }
