@@ -89,8 +89,7 @@ static void advertising_init(uint8_t *p_payload) {
 
     ble_gap_adv_params_t *p_gap_adv_params = NULL;
 
-    // if (m_adv_handle == BLE_GAP_ADV_SET_HANDLE_NOT_SET) 
-    {
+    // if (m_adv_handle == BLE_GAP_ADV_SET_HANDLE_NOT_S    {
 
         ble_gap_adv_params_t gap_adv_params;
         memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -105,7 +104,7 @@ static void advertising_init(uint8_t *p_payload) {
         gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
         p_gap_adv_params = &gap_adv_params;
-    }
+    // }
 
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
@@ -126,7 +125,7 @@ static void advertising_init(uint8_t *p_payload) {
     //  [in]	    p_adv_data	    Advertising data. If set to NULL, no advertising data will be used. See ble_gap_adv_data_t.
     //  [in]	    p_adv_params	Advertising parameters. When this function is used to update advertising data while advertising, 
     //                              this parameter must be NULL. See ble_gap_adv_params_t.
-    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, p_gap_adv_params));
+    MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
 }
 
 
