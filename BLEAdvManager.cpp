@@ -85,7 +85,7 @@ static bool m_bleStackInit = false;
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(uint8_t *p_Payload) {
+static void advertising_init(uint8_t *p_payload) {
 
     ble_gap_adv_params_t *p_gap_adv_params = NULL;
 
@@ -95,7 +95,6 @@ static void advertising_init(uint8_t *p_Payload) {
         ble_gap_adv_params_t gap_adv_params;
         memset(&gap_adv_params, 0, sizeof(gap_adv_params));
 
-        // gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; //BLE_GAP_ADV_TYPE_EXTENDED_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED; // BLE_GAP_ADV_TYPE_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED;
         gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_CONNECTABLE_SCANNABLE_UNDIRECTED;
         gap_adv_params.p_peer_addr      = NULL;    // Undirected advertisement.
         gap_adv_params.filter_policy    = BLE_GAP_ADV_FP_ANY;
@@ -111,7 +110,7 @@ static void advertising_init(uint8_t *p_Payload) {
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
 
-    gap_adv_data.adv_data.p_data    = p_Payload;
+    gap_adv_data.adv_data.p_data    = p_payload;
     gap_adv_data.adv_data.len       = 31;
 
     // https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/group_b_l_e_g_a_p_f_u_n_c_t_i_o_n_s_4.html#ga9969047f4e7485c3f856c841978cc31a
@@ -215,15 +214,16 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 }
 
 
-void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_Payload) {
+void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
     bool isStarted = m_payloads[handle] != NULL;
 
-    m_payloads[handle] = p_Payload;
+    m_payloads[handle] = p_payload;
 
-    advertising_init(p_Payload);
+    advertising_init(p_payload);
 
-    if (!isStarted) {
+    // if (!isStarted) 
+    {
 
         advertising_start();
     }
@@ -264,7 +264,7 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 }
 
 
-void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_Payload) {
+void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
 }
 

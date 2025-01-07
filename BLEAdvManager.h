@@ -23,7 +23,7 @@ class BLEAdvManager
       uint8_t register_client();
       void unregister_client(uint8_t handle);
 
-      void advertise(uint8_t handle, uint8_t *p_Payload);
+      void advertise(uint8_t handle, uint8_t *p_payload);
       void stop(uint8_t handle);
 
     private:
@@ -58,7 +58,7 @@ class BLEAdvManager
       uint8_t register_client();
       void unregister_client(uint8_t handle);
 
-      void advertise(uint8_t handle, uint8_t *p_Payload);
+      void advertise(uint8_t handle, uint8_t *p_payload);
       void stop(uint8_t handle);
 
     private:
