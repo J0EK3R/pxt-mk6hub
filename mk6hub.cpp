@@ -20,7 +20,7 @@ namespace mk6hub {
         NULL
     };
 
-    MK6HubService* getService(uint8_t hubNo) {
+    BLEAdvManager* getBLEAdvManager() {
 
         if (NULL == _pBLEAdvManager)
         {
@@ -30,6 +30,13 @@ namespace mk6hub {
             _pBLEAdvManager = new BLEAdvManager(*uBit.ble);
 #endif
         }
+
+        return _pBLEAdvManager;
+    }
+
+    MK6HubService* getService(uint8_t hubNo) {
+
+        getBLEAdvManager();
 
         MK6HubService *pService = _pService[hubNo];
 
@@ -45,6 +52,15 @@ namespace mk6hub {
 
         return pService;
     }
+
+    //%
+    void loop() {
+
+        BLEAdvManager *pBLEAdvManager = getBLEAdvManager();
+
+        pBLEAdvManager->loop():
+    }
+
 
     //%
     void init(uint8_t hubNo) {

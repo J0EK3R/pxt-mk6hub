@@ -26,6 +26,8 @@ class BLEAdvManager
       void advertise(uint8_t handle, uint8_t *p_payload);
       void stop(uint8_t handle);
 
+      void loop();
+
     private:
 
       uint8_t m_registeredClients[10] = { 
@@ -33,6 +35,8 @@ class BLEAdvManager
 
       uint8_t* m_payloads[10] = { 
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+
+      uint8_t m_currentClient = 0;
 };
 
 //================================================================
@@ -60,6 +64,8 @@ class BLEAdvManager
 
       void advertise(uint8_t handle, uint8_t *p_payload);
       void stop(uint8_t handle);
+
+      void loop();
 
     private:
 

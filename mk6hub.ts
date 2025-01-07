@@ -30,6 +30,18 @@ namespace mk6hub {
     }
 
     /**
+    *  MK6Hub loop
+    */
+    //% blockId=mk6hub_loop
+    //% block="MK6Hub loop"
+    //% shim=mk6hub::loop
+    //% blockGap=8 weight=60
+    export function loop(): void {
+        return;
+    }
+
+
+    /**
     *  MK6Hub init
     * @param hubNo hubNo, eg: "Hub A"
     */

@@ -213,6 +213,28 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 }
 
 
+void BLEAdvManager::loop() {
+
+    for (int index = 0; index < 10; index++)
+    {
+        m_currentClient++;
+
+        if(m_currentClient >= 10)
+        {
+            m_currentClient = 0;
+        }
+
+        if (m_registeredClients[m_currentClient] != 0xFF) {
+
+            uint8_t *p_payload = m_payloads[m_currentClient]
+
+            advertising_init(p_payload);
+            return;
+        }
+    }
+}
+
+
 void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
     bool isStarted = NULL != m_payloads[handle];
