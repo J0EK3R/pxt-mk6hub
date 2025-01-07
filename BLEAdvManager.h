@@ -36,6 +36,10 @@ class BLEAdvManager
       uint8_t* m_payloads[10] = { 
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 
+      uint8_t m_dropLoop[10] = { 
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+
       uint8_t m_currentClient = 0;
 };
 

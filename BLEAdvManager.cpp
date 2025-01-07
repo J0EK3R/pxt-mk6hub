@@ -226,10 +226,17 @@ void BLEAdvManager::loop() {
 
         if (m_registeredClients[m_currentClient] != 0xFF) {
 
-            uint8_t *p_payload = m_payloads[m_currentClient];
+            if (m_dropLoop[m_currentClient] != 0x00) {
 
-            advertising_init(p_payload);
-            return;
+                m_dropLoop[m_currentClient] == 0x00;
+            }
+            else {
+
+                uint8_t *p_payload = m_payloads[m_currentClient];
+
+                advertising_init(p_payload);
+                return;
+            }
         }
     }
 }
@@ -241,10 +248,15 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
     m_payloads[handle] = p_payload;
 
+    advertising_init(p_payload);
+
     if (isNew) {
 
-        loop();
         advertising_start();
+    }
+    else {
+
+        m_dropLoop[m_currentClient] = 0xFF;
     }
 }
 
