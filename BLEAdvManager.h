@@ -28,6 +28,11 @@ class BLEAdvManager
 
     private:
 
+      uint8_t m_registeredClients[10] = { 
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+
+      uint8_t* m_payloads[10] = { 
+        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 };
 
 //================================================================

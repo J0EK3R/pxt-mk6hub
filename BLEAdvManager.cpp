@@ -104,7 +104,7 @@ static void advertising_init(uint8_t *p_Payload) {
         gap_adv_params.primary_phy      = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
         gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
-        p_gap_adv_params = &gap_adv_params
+        p_gap_adv_params = &gap_adv_params;
     }
 
     ble_gap_adv_data_t  gap_adv_data;
@@ -183,25 +183,55 @@ BLEAdvManager::BLEAdvManager() {
     ble_stack_init();
 }
 
+
 uint8_t BLEAdvManager::register_client() {
 
-    return 0;
+    for (int index = 0; index < 10; index++) {
+
+        if(m_registeredClients[index] == 0xFF)
+        {
+            m_registeredClients[index] = index;
+            m_payloads[index] = NULL;
+
+            return index;
+        }
+    }
+
+    return 0xFF;
 }
+
 
 void BLEAdvManager::unregister_client(uint8_t handle) {
 
+    for (int index = 0; index < 10; index++) {
+
+        if(m_registeredClients[index] == handle)
+        {
+            m_registeredClients[index] = 0xFF;
+            m_payloads[index] = NULL;
+        }
+    }
 }
 
 
 void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_Payload) {
 
+    bool isStarted = m_payloads[handle] != NULL;
+
+    m_payloads[handle] = p_Payload;
+
     advertising_init(p_Payload);
 
-    advertising_start();
+    if (!isStarted) {
+
+        advertising_start();
+    }
 }
 
 
 void BLEAdvManager::stop(uint8_t handle) {
+
+    m_payloads[handle] = NULL;
 
     advertising_stop();
 }
