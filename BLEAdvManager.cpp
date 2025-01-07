@@ -226,7 +226,7 @@ void BLEAdvManager::loop() {
 
         if (m_registeredClients[m_currentClient] != 0xFF) {
 
-            uint8_t *p_payload = m_payloads[m_currentClient]
+            uint8_t *p_payload = m_payloads[m_currentClient];
 
             advertising_init(p_payload);
             return;
