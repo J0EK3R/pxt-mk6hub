@@ -37,7 +37,7 @@ class BLEAdvManager
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 
       uint8_t m_dropLoop[10] = { 
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
       uint8_t m_currentClient = 0;
