@@ -89,7 +89,8 @@ static void advertising_init(uint8_t *p_Payload) {
 
     ble_gap_adv_params_t *p_gap_adv_params = NULL;
 
-    if (m_adv_handle == BLE_GAP_ADV_SET_HANDLE_NOT_SET) {
+    // if (m_adv_handle == BLE_GAP_ADV_SET_HANDLE_NOT_SET) 
+    {
 
         ble_gap_adv_params_t gap_adv_params;
         memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -205,8 +206,8 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 
     for (int index = 0; index < 10; index++) {
 
-        if(m_registeredClients[index] == handle)
-        {
+        if (m_registeredClients[index] == handle) {
+
             m_registeredClients[index] = 0xFF;
             m_payloads[index] = NULL;
         }

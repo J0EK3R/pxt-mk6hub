@@ -66,5 +66,5 @@ void MK6HubService::setChannelOffset(uint8_t channel, float offset) {
 
 uint8_t MK6HubService::getVersion() {
 
-    return 2;
+    return m_bleAdvManager_handle;
 }
