@@ -179,9 +179,20 @@ static void advertising_stop(uint8_t handle) {
 
 BLEAdvManager::BLEAdvManager() {
 
+    init();
     ble_stack_init();
 }
 
+
+void BLEAdvManager::init() {
+
+    for (int index = 0; index < MAX_CLIENTS; index ++) {
+
+        m_registeredClients[index] = 0xFF;
+        m_payloads[index] = NULL;
+        m_dropLoop = 0;
+    }
+}
 
 uint8_t BLEAdvManager::register_client() {
 

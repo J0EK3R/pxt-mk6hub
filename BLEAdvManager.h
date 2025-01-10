@@ -14,6 +14,9 @@
 // https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/MicroBitBLEService.h
 // #include "MicroBitBLEService.h" 
 
+#define MAX_CLIENTS            10
+
+
 class BLEAdvManager
 {
     public:
@@ -30,15 +33,13 @@ class BLEAdvManager
 
     private:
 
-      uint8_t m_registeredClients[10] = { 
-        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+      void init();
 
-      uint8_t* m_payloads[10] = { 
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+      uint8_t m_registeredClients[MAX_CLIENTS];
+    
+      uint8_t* m_payloads[MAX_CLIENTS];
 
-      uint8_t m_dropLoop[10] = { 
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
+      uint8_t m_dropLoop[MAX_CLIENTS];
 
       uint8_t m_currentClient = 0;
 };
