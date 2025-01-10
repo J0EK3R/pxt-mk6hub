@@ -104,8 +104,8 @@ static void advertising_init(uint8_t *p_payload) {
         gap_adv_params.interval         = NON_CONNECTABLE_ADV_INTERVAL;
         gap_adv_params.duration         = 0;       // Never time out.
 
-        gap_adv_params.primary_phy      = BLE_GAP_PHY_2MBPS;    //BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
-        gap_adv_params.secondary_phy    = BLE_GAP_PHY_2MBPS;    // BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+        gap_adv_params.primary_phy      = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+        gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
         // https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/group_b_l_e_g_a_p_f_u_n_c_t_i_o_n_s_4.html#ga9969047f4e7485c3f856c841978cc31a
         // Configure an advertising set. Set, clear or update advertising and scan response data.
