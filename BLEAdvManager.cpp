@@ -76,8 +76,6 @@
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
-static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
-
 static bool m_bleStackInit = false;
 
 /**@brief Function for initializing the Advertising functionality.
@@ -190,7 +188,7 @@ void BLEAdvManager::init() {
 
         m_registeredClients[index] = 0xFF;
         m_payloads[index] = NULL;
-        m_dropLoop[index] = 0;
+        m_dropLoop[index] = 0x00;
     }
 }
 
