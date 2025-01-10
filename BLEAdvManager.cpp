@@ -93,7 +93,7 @@ static void advertising_init(uint8_t *p_handle, uint8_t *p_payload) {
     gap_adv_data.adv_data.p_data    = p_payload;
     gap_adv_data.adv_data.len       = 31;
 
-    if (BLE_GAP_ADV_SET_HANDLE_NOT_SET == m_adv_handle) {
+    if (BLE_GAP_ADV_SET_HANDLE_NOT_SET == *p_handle) {
 
         ble_gap_adv_params_t gap_adv_params;
         memset(&gap_adv_params, 0, sizeof(gap_adv_params));
@@ -131,7 +131,7 @@ static void advertising_init(uint8_t *p_handle, uint8_t *p_payload) {
 
 /**@brief Function for starting advertising.
  */
-static void advertising_start(void) {
+static void advertising_start(uint8_t handle) {
 
     // https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/group_b_l_e_g_a_p_f_u_n_c_t_i_o_n_s_4.html#ga74c21287bd6cbcd5822bc73792f678d8
     // Start advertising (GAP Discoverable, Connectable modes, Broadcast Procedure). 
@@ -141,7 +141,7 @@ static void advertising_start(void) {
     // [in]	        adv_handle	    Advertising handle to advertise on, received from sd_ble_gap_adv_set_configure.
     // [in]	        conn_cfg_tag	Tag identifying a configuration set by sd_ble_cfg_set or BLE_CONN_CFG_TAG_DEFAULT to use the default connection configuration. 
     //                              For non-connectable advertising, this is ignored.    
-    MICROBIT_BLE_ECHK(sd_ble_gap_adv_start(m_adv_handle, APP_BLE_CONN_CFG_TAG));
+    MICROBIT_BLE_ECHK(sd_ble_gap_adv_start(handle, APP_BLE_CONN_CFG_TAG));
 }
 
 
@@ -169,11 +169,11 @@ static void ble_stack_init(void)
 /**
  * @brief Function for stop advertising.
  */
-static void advertising_stop(void) {
+static void advertising_stop(uint8_t handle) {
 
     MICROBIT_DEBUG_DMESG("stopAdvertising");
 
-    MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(m_adv_handle));
+    MICROBIT_BLE_ECHK(sd_ble_gap_adv_stop(handle));
 }
 
 
@@ -251,7 +251,7 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
     if (isNew) {
 
         advertising_init(&m_adv_handle, p_payload);
-        advertising_start();
+        advertising_start(m_adv_handle);
     }
     else {
 
@@ -269,7 +269,7 @@ void BLEAdvManager::stop(uint8_t handle) {
 
     m_payloads[handle] = NULL;
 
-    advertising_stop();
+    advertising_stop(m_adv_handle);
 }
 
 
