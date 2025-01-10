@@ -74,7 +74,8 @@
 
 #define APP_BLE_CONN_CFG_TAG            1                                  /**< A tag identifying the SoftDevice BLE configuration. */
 
-#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
+//#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
+#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(100, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
 static uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 
@@ -104,8 +105,8 @@ static void advertising_init(uint8_t *p_payload) {
         gap_adv_params.interval         = NON_CONNECTABLE_ADV_INTERVAL;
         gap_adv_params.duration         = 0;       // Never time out.
 
-        gap_adv_params.primary_phy      = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
-        gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+        gap_adv_params.primary_phy      = BLE_GAP_PHY_2MBPS;    //BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
+        gap_adv_params.secondary_phy    = BLE_GAP_PHY_2MBPS;    // BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
         // https://docs.nordicsemi.com/bundle/s113_v7.3.0_api/page/group_b_l_e_g_a_p_f_u_n_c_t_i_o_n_s_4.html#ga9969047f4e7485c3f856c841978cc31a
         // Configure an advertising set. Set, clear or update advertising and scan response data.
