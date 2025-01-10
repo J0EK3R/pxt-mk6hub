@@ -85,7 +85,7 @@ static bool m_bleStackInit = false;
  * @details Encodes the required advertising data and passes it to the stack.
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
-static void advertising_init(uint8_t *p_payload) {
+static void advertising_init(uint8_t *p_handle, uint8_t *p_payload) {
 
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
@@ -120,11 +120,11 @@ static void advertising_init(uint8_t *p_payload) {
         //  [in]	    p_adv_data	    Advertising data. If set to NULL, no advertising data will be used. See ble_gap_adv_data_t.
         //  [in]	    p_adv_params	Advertising parameters. When this function is used to update advertising data while advertising, 
         //                              this parameter must be NULL. See ble_gap_adv_params_t.
-        MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, &gap_adv_params));
+        MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(p_handle, &gap_adv_data, &gap_adv_params));
     }
     else {
 
-        MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(&m_adv_handle, &gap_adv_data, NULL));
+        MICROBIT_BLE_ECHK(sd_ble_gap_adv_set_configure(p_handle, &gap_adv_data, NULL));
     }
 }
 
@@ -234,7 +234,7 @@ void BLEAdvManager::loop() {
 
                 uint8_t *p_payload = m_payloads[m_currentClient];
 
-                advertising_init(p_payload);
+                advertising_init(&m_adv_handle, p_payload);
                 return;
             }
         }
@@ -250,7 +250,7 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
     if (isNew) {
 
-        advertising_init(p_payload);
+        advertising_init(&m_adv_handle, p_payload);
         advertising_start();
     }
     else {
@@ -259,7 +259,7 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
         if (m_dropLoop[m_currentClient] < 2) {
 
-            advertising_init(p_payload);
+            advertising_init(&m_adv_handle, p_payload);
         }
     }
 }
