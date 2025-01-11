@@ -176,6 +176,14 @@ static void advertising_stop(uint8_t handle) {
 }
 
 
+static void doadvertising(uint8_t *p_handle, uint8_t *p_payload) {
+
+    advertising_stop(*p_handle);
+    advertising_init(p_handle, p_payload);
+    advertising_start(*p_handle);
+}
+
+
 BLEAdvManager::BLEAdvManager() {
 
     init();
@@ -245,9 +253,10 @@ void BLEAdvManager::loop() {
 
                 uint8_t *p_payload = this->m_payloads[this->m_currentClientHandle];
 
-                advertising_stop(this->m_adv_handle);
-                advertising_init(&this->m_adv_handle, p_payload);
-                advertising_start(this->m_adv_handle);
+                // advertising_stop(this->m_adv_handle);
+                // advertising_init(&this->m_adv_handle, p_payload);
+                // advertising_start(this->m_adv_handle);
+                doadvertising(&this->m_adv_handle, p_payload);
                 return;
             }
         }
@@ -263,8 +272,9 @@ void BLEAdvManager::advertise(uint8_t clientHandle, uint8_t *p_payload) {
 
     if (isNew) {
 
-        advertising_init(&this->m_adv_handle, p_payload);
-        advertising_start(this->m_adv_handle);
+        // advertising_init(&this->m_adv_handle, p_payload);
+        // advertising_start(this->m_adv_handle);
+        doadvertising(&this->m_adv_handle, p_payload);
     }
     else {
 
@@ -272,9 +282,10 @@ void BLEAdvManager::advertise(uint8_t clientHandle, uint8_t *p_payload) {
 
         if (this->m_dropLoop[clientHandle] < 2) {
 
-            advertising_stop(this->m_adv_handle);
-            advertising_init(&this->m_adv_handle, p_payload);
-            advertising_start(this->m_adv_handle);
+            // advertising_stop(this->m_adv_handle);
+            // advertising_init(&this->m_adv_handle, p_payload);
+            // advertising_start(this->m_adv_handle);
+            doadvertising(&this->m_adv_handle, p_payload);
         }
     }
 }
