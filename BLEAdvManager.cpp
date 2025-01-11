@@ -72,10 +72,8 @@
 #include "nrf_log_default_backends.h"
 
 
-#define APP_BLE_CONN_CFG_TAG            1                                  /**< A tag identifying the SoftDevice BLE configuration. */
-
-// #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
-#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(1525, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
+#define APP_BLE_CONN_CFG_TAG            1                  /**< A tag identifying the SoftDevice BLE configuration. */
+#define ADV_INTERVAL    MSEC_TO_UNITS(100, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
 static bool m_bleStackInit = false;
 
@@ -85,7 +83,8 @@ static bool m_bleStackInit = false;
  *          Also builds a structure to be passed to the stack when starting advertising.
  */
 static void advertising_init(uint8_t *p_handle, uint8_t *p_payload) {
-
+    // https://academy.nordicsemi.com/courses/bluetooth-low-energy-fundamentals/lessons/lesson-2-bluetooth-le-advertising/topic/advertising-process/
+    
     ble_gap_adv_data_t  gap_adv_data;
     memset(&gap_adv_data, 0, sizeof(gap_adv_data));
 
@@ -100,9 +99,13 @@ static void advertising_init(uint8_t *p_handle, uint8_t *p_payload) {
         gap_adv_params.properties.type  = BLE_GAP_ADV_TYPE_CONNECTABLE_SCANNABLE_UNDIRECTED;
         gap_adv_params.p_peer_addr      = NULL;    // Undirected advertisement.
         gap_adv_params.filter_policy    = BLE_GAP_ADV_FP_ANY;
-        gap_adv_params.interval         = NON_CONNECTABLE_ADV_INTERVAL;
-        gap_adv_params.duration         = 0;       // Never time out.
 
+        gap_adv_params.interval         = ADV_INTERVAL;
+        // limit interval to defined MIN/MAX
+        if ( gap_adv_params.interval < BLE_GAP_ADV_INTERVAL_MIN) gap_adv_params.interval = BLE_GAP_ADV_INTERVAL_MIN;
+        if ( gap_adv_params.interval > BLE_GAP_ADV_INTERVAL_MAX) gap_adv_params.interval = BLE_GAP_ADV_INTERVAL_MAX;
+
+        gap_adv_params.duration         = 0;       // Never time out.
         gap_adv_params.primary_phy      = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
         gap_adv_params.secondary_phy    = BLE_GAP_PHY_1MBPS; // BLE_GAP_PHY_CODED
 
@@ -193,7 +196,8 @@ BLEAdvManager::BLEAdvManager() {
 
 void BLEAdvManager::init() {
 
-    for (int index = 0; index < MAX_CLIENTS; index++) {
+    // initialize members
+    for (uint8_t index = 0; index < MAX_CLIENTS_COUNT; index++) {
 
         this->m_registeredClients[index] = UNSET_HANDLE;
         this->m_payloads[index] = NULL;
@@ -203,12 +207,13 @@ void BLEAdvManager::init() {
 
 uint8_t BLEAdvManager::register_client() {
 
-    for (int index = 0; index < MAX_CLIENTS; index++) {
+    // find first unused entry and return index as clientHandle
+    for (uint8_t clientHandle = 0; clientHandle < MAX_CLIENTS_COUNT; clientHandle++) {
 
-        if(this->m_registeredClients[index] == UNSET_HANDLE)
+        if(this->m_registeredClients[clientHandle] == UNSET_HANDLE)
         {
-            this->m_registeredClients[index] = index;
-            this->m_payloads[index] = NULL;
+            this->m_registeredClients[clientHandle] = clientHandle;
+            this->m_payloads[clientHandle] = NULL;                  // reset
 
             return index;
         }
@@ -220,12 +225,12 @@ uint8_t BLEAdvManager::register_client() {
 
 void BLEAdvManager::unregister_client(uint8_t clientHandle) {
 
-    for (int index = 0; index < MAX_CLIENTS; index++) {
+    for (uint8_t clientHandle = 0; clientHandle < MAX_CLIENTS_COUNT; clientHandle++) {
 
-        if (this->m_registeredClients[index] == clientHandle) {
+        if (this->m_registeredClients[clientHandle] == clientHandle) {
 
-            this->m_registeredClients[index] = UNSET_HANDLE;
-            this->m_payloads[index] = NULL;
+            this->m_registeredClients[clientHandle] = UNSET_HANDLE; // reset
+            this->m_payloads[clientHandle] = NULL;                  // reset
         }
     }
 }
@@ -233,17 +238,19 @@ void BLEAdvManager::unregister_client(uint8_t clientHandle) {
 
 void BLEAdvManager::loop() {
 
-    for (int index = 0; index < MAX_CLIENTS; index++) {
+    for (uint8_t index = 0; index < MAX_CLIENTS_COUNT; index++) {
 
-        this->m_currentClientHandle++;
-        if (this->m_currentClientHandle >= MAX_CLIENTS) {
+        // select next registered client
+        this->m_currentClientHandle++;                      // inrement currentClient
+        if (this->m_currentClientHandle >= MAX_CLIENTS_COUNT) {   // if currentClient exceeds maximum then set to 0
 
             this->m_currentClientHandle = 0;
         }
 
+        // currentClient is valid
         if (this->m_registeredClients[this->m_currentClientHandle] != UNSET_HANDLE) { // valid handle
 
-            // value > 0 means that current data was advertised since last loop
+            // droploop-value > 0 means that current data was advertised since last loop
             // -> no advertising of current data in this loop
             if (this->m_dropLoop[this->m_currentClientHandle] > 0) {
 

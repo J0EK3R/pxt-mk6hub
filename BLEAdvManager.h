@@ -14,7 +14,7 @@
 // https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/MicroBitBLEService.h
 // #include "MicroBitBLEService.h" 
 
-#define MAX_CLIENTS           10
+#define MAX_CLIENTS_COUNT     10
 #define UNSET_HANDLE          0xFF
 
 class BLEAdvManager
@@ -35,11 +35,11 @@ class BLEAdvManager
 
       void init();
 
-      uint8_t m_registeredClients[MAX_CLIENTS];
+      uint8_t m_registeredClients[MAX_CLIENTS_COUNT];
     
-      uint8_t* m_payloads[MAX_CLIENTS];
+      uint8_t* m_payloads[MAX_CLIENTS_COUNT];
 
-      uint8_t m_dropLoop[MAX_CLIENTS];
+      uint8_t m_dropLoop[MAX_CLIENTS_COUNT];
 
       uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 
