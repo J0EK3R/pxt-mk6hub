@@ -189,7 +189,6 @@ void BLEAdvManager::init() {
         m_registeredClients[index] = 0xFF;
         m_payloads[index] = NULL;
         m_dropLoop[index] = 0x00;
-        m_adv_handle[index] = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
     }
 }
 
@@ -243,9 +242,8 @@ void BLEAdvManager::loop() {
             else {
 
                 uint8_t *p_payload = m_payloads[m_currentClient];
-                uint8_t *p_handle = &m_adv_handle[m_currentClient];
 
-                advertising_init(p_handle, p_payload);
+                advertising_init(&m_adv_handle, p_payload);
                 return;
             }
         }
@@ -256,14 +254,13 @@ void BLEAdvManager::loop() {
 void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
     bool isNew = NULL == m_payloads[handle];
-    uint8_t *p_handle = &m_adv_handle[handle];
 
     m_payloads[handle] = p_payload;
 
     if (isNew) {
 
-        advertising_init(p_handle, p_payload);
-        advertising_start(*p_handle);
+        advertising_init(&m_adv_handle, p_payload);
+        advertising_start(m_adv_handle);
     }
     else {
 
@@ -280,9 +277,8 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 void BLEAdvManager::stop(uint8_t handle) {
 
     m_payloads[handle] = NULL;
-    uint8_t *p_handle = &m_adv_handle[handle];
 
-    advertising_stop(*p_handle);
+    advertising_stop(&m_adv_handle);
 }
 
 

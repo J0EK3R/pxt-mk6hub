@@ -41,7 +41,7 @@ class BLEAdvManager
 
       uint8_t m_dropLoop[MAX_CLIENTS];
 
-      uint8_t m_adv_handle[MAX_CLIENTS];
+      uint8_t m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET; /**< Advertising handle used to identify an advertising set. */
 
       uint8_t m_currentClient = 0;
 };
