@@ -74,7 +74,8 @@
 
 #define APP_BLE_CONN_CFG_TAG            1                                  /**< A tag identifying the SoftDevice BLE configuration. */
 
-#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
+// #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(152.5, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
+#define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(1525, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
 
 static bool m_bleStackInit = false;
 
@@ -186,7 +187,7 @@ void BLEAdvManager::init() {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        this->m_registeredClients[index] = 0xFF;
+        this->m_registeredClients[index] = UNSET_HANDLE;
         this->m_payloads[index] = NULL;
         this->m_dropLoop[index] = 0x00;
     }
@@ -196,7 +197,7 @@ uint8_t BLEAdvManager::register_client() {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        if(this->m_registeredClients[index] == 0xFF)
+        if(this->m_registeredClients[index] == UNSET_HANDLE)
         {
             this->m_registeredClients[index] = index;
             this->m_payloads[index] = NULL;
@@ -205,17 +206,17 @@ uint8_t BLEAdvManager::register_client() {
         }
     }
 
-    return 0xFF;
+    return UNSET_HANDLE;
 }
 
 
-void BLEAdvManager::unregister_client(uint8_t handle) {
+void BLEAdvManager::unregister_client(uint8_t clientHandle) {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        if (this->m_registeredClients[index] == handle) {
+        if (this->m_registeredClients[index] == clientHandle) {
 
-            this->m_registeredClients[index] = 0xFF;
+            this->m_registeredClients[index] = UNSET_HANDLE;
             this->m_payloads[index] = NULL;
         }
     }
@@ -226,21 +227,23 @@ void BLEAdvManager::loop() {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        this->m_currentClient++;
-        if (this->m_currentClient >= MAX_CLIENTS) {
+        this->m_currentClientHandle++;
+        if (this->m_currentClientHandle >= MAX_CLIENTS) {
 
-            this->m_currentClient = 0;
+            this->m_currentClientHandle = 0;
         }
 
-        if (this->m_registeredClients[this->m_currentClient] != 0xFF) {
+        if (this->m_registeredClients[this->m_currentClientHandle] != UNSET_HANDLE) { // valid handle
 
-            if (this->m_dropLoop[this->m_currentClient] > 0) {
+            // value > 0 means that current data was advertised since last loop
+            // -> no advertising of current data in this loop
+            if (this->m_dropLoop[this->m_currentClientHandle] > 0) {
 
-                this->m_dropLoop[this->m_currentClient] = 0;
+                this->m_dropLoop[this->m_currentClientHandle] = 0; // reset
             }
             else {
 
-                uint8_t *p_payload = this->m_payloads[this->m_currentClient];
+                uint8_t *p_payload = this->m_payloads[this->m_currentClientHandle];
 
                 advertising_stop(this->m_adv_handle);
                 advertising_init(&this->m_adv_handle, p_payload);
@@ -252,11 +255,11 @@ void BLEAdvManager::loop() {
 }
 
 
-void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
+void BLEAdvManager::advertise(uint8_t clientHandle, uint8_t *p_payload) {
 
-    bool isNew = NULL == this->m_payloads[handle];
+    bool isNew = NULL == this->m_payloads[clientHandle];
 
-    this->m_payloads[handle] = p_payload;
+    this->m_payloads[clientHandle] = p_payload;
 
     if (isNew) {
 
@@ -265,9 +268,9 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
     }
     else {
 
-        this->m_dropLoop[handle]++;
+        this->m_dropLoop[clientHandle]++;
 
-        if (this->m_dropLoop[handle] < 2) {
+        if (this->m_dropLoop[clientHandle] < 2) {
 
             advertising_stop(this->m_adv_handle);
             advertising_init(&this->m_adv_handle, p_payload);
@@ -277,9 +280,9 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 }
 
 
-void BLEAdvManager::stop(uint8_t handle) {
+void BLEAdvManager::stop(uint8_t clientHandle) {
 
-    this->m_payloads[handle] = NULL;
+    this->m_payloads[clientHandle] = NULL;
 
     advertising_stop(this->m_adv_handle);
 }
