@@ -194,7 +194,7 @@ void BLEAdvManager::init() {
 
 uint8_t BLEAdvManager::register_client() {
 
-    for (int index = 0; index < 10; index++) {
+    for (int index = 0; index < MAX_CLIENTS; index++) {
 
         if(m_registeredClients[index] == 0xFF)
         {
@@ -211,7 +211,7 @@ uint8_t BLEAdvManager::register_client() {
 
 void BLEAdvManager::unregister_client(uint8_t handle) {
 
-    for (int index = 0; index < 10; index++) {
+    for (int index = 0; index < MAX_CLIENTS; index++) {
 
         if (m_registeredClients[index] == handle) {
 
@@ -224,12 +224,11 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 
 void BLEAdvManager::loop() {
 
-    for (int index = 0; index < 10; index++) {
+    for (int index = 0; index < MAX_CLIENTS; index++) {
 
         m_currentClient++;
+        if (m_currentClient >= MAX_CLIENTS) {
 
-        if (m_currentClient >= 10)
-        {
             m_currentClient = 0;
         }
 
@@ -278,7 +277,7 @@ void BLEAdvManager::stop(uint8_t handle) {
 
     m_payloads[handle] = NULL;
 
-    advertising_stop(&m_adv_handle);
+    advertising_stop(m_adv_handle);
 }
 
 
