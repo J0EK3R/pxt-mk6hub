@@ -186,9 +186,9 @@ void BLEAdvManager::init() {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        m_registeredClients[index] = 0xFF;
-        m_payloads[index] = NULL;
-        m_dropLoop[index] = 0x00;
+        this->m_registeredClients[index] = 0xFF;
+        this->m_payloads[index] = NULL;
+        this->m_dropLoop[index] = 0x00;
     }
 }
 
@@ -196,10 +196,10 @@ uint8_t BLEAdvManager::register_client() {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        if(m_registeredClients[index] == 0xFF)
+        if(this->m_registeredClients[index] == 0xFF)
         {
-            m_registeredClients[index] = index;
-            m_payloads[index] = NULL;
+            this->m_registeredClients[index] = index;
+            this->m_payloads[index] = NULL;
 
             return index;
         }
@@ -213,10 +213,10 @@ void BLEAdvManager::unregister_client(uint8_t handle) {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        if (m_registeredClients[index] == handle) {
+        if (this->m_registeredClients[index] == handle) {
 
-            m_registeredClients[index] = 0xFF;
-            m_payloads[index] = NULL;
+            this->m_registeredClients[index] = 0xFF;
+            this->m_payloads[index] = NULL;
         }
     }
 }
@@ -226,25 +226,25 @@ void BLEAdvManager::loop() {
 
     for (int index = 0; index < MAX_CLIENTS; index++) {
 
-        m_currentClient++;
-        if (m_currentClient >= MAX_CLIENTS) {
+        this->m_currentClient++;
+        if (this->m_currentClient >= MAX_CLIENTS) {
 
-            m_currentClient = 0;
+            this->m_currentClient = 0;
         }
 
-        if (m_registeredClients[m_currentClient] != 0xFF) {
+        if (this->m_registeredClients[this->m_currentClient] != 0xFF) {
 
-            if (m_dropLoop[m_currentClient] > 0) {
+            if (this->m_dropLoop[this->m_currentClient] > 0) {
 
-                m_dropLoop[m_currentClient] = 0;
+                this->m_dropLoop[this->m_currentClient] = 0;
             }
             else {
 
-                uint8_t *p_payload = m_payloads[m_currentClient];
+                uint8_t *p_payload = this->m_payloads[this->m_currentClient];
 
-                advertising_stop(m_adv_handle);
-                advertising_init(&m_adv_handle, p_payload);
-                advertising_start(m_adv_handle);
+                advertising_stop(this->m_adv_handle);
+                advertising_init(&this->m_adv_handle, p_payload);
+                advertising_start(this->m_adv_handle);
                 return;
             }
         }
@@ -254,24 +254,24 @@ void BLEAdvManager::loop() {
 
 void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
-    bool isNew = NULL == m_payloads[handle];
+    bool isNew = NULL == this->m_payloads[handle];
 
-    m_payloads[handle] = p_payload;
+    this->m_payloads[handle] = p_payload;
 
     if (isNew) {
 
-        advertising_init(&m_adv_handle, p_payload);
-        advertising_start(m_adv_handle);
+        advertising_init(&this->m_adv_handle, p_payload);
+        advertising_start(this->m_adv_handle);
     }
     else {
 
-        m_dropLoop[m_currentClient]++;
+        this->m_dropLoop[this->m_currentClient]++;
 
-        if (m_dropLoop[m_currentClient] < 2) {
+        if (this->m_dropLoop[this->m_currentClient] < 2) {
 
-            advertising_stop(m_adv_handle);
-            advertising_init(&m_adv_handle, p_payload);
-            advertising_start(m_adv_handle);
+            advertising_stop(this->m_adv_handle);
+            advertising_init(&this->m_adv_handle, p_payload);
+            advertising_start(this->m_adv_handle);
         }
     }
 }
@@ -279,9 +279,9 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
 void BLEAdvManager::stop(uint8_t handle) {
 
-    m_payloads[handle] = NULL;
+    this->m_payloads[handle] = NULL;
 
-    advertising_stop(m_adv_handle);
+    advertising_stop(this->m_adv_handle);
 }
 
 
