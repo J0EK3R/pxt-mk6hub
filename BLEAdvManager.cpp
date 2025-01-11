@@ -269,9 +269,9 @@ void BLEAdvManager::advertise(uint8_t handle, uint8_t *p_payload) {
 
         if (this->m_dropLoop[handle] < 2) {
 
-            advertising_stop(handle);
-            advertising_init(&handle, p_payload);
-            advertising_start(handle);
+            advertising_stop(this->m_adv_handle);
+            advertising_init(&this->m_adv_handle, p_payload);
+            advertising_start(this->m_adv_handle);
         }
     }
 }
